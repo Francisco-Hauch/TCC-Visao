@@ -1,0 +1,72 @@
+========================================================
+ DOWNLOAD DAS ORTOFOTOS POR REGIONAL - Curitiba / TCC
+========================================================
+
+DECISAO
+-------
+Baixar a cidade inteira = 2,47 milhoes de tiles / ~27 GB, e as
+bordas do bbox generoso vem quase todas VAZIAS (tiles em branco,
+fora da area fotografada). Em vez disso baixamos so o NUCLEO
+URBANO de 8 regionais, cortando as franjas rurais e as regionais
+de borda (Bairro Novo e Tatuquara ficaram de fora).
+Resultado: ~717 mil tiles / ~8,5 GB  ->  71% menos.
+
+As caixas sao retangulos APROXIMADos do miolo de cada regional
+(nao os poligonos oficiais do IPPUC). Servem para escolher o que
+baixar; a precisao pra amarrar cada tile a um endereco vem depois,
+dos world files (.pgw/.prj) + o dataset de ruas.
+
+VELOCIDADE / TEMPO
+------------------
+O gargalo e latencia do servidor (~1s por requisicao), NAO banda
+(cada tile tem so ~12 KB). Por isso MAIS threads = mais rapido:
+com 8 threads ja se viu ~27 t/s; com 4 threads cai pra ~1 t/s.
+Os erros "WinError 10054" (reset de conexao) sao normais - o
+resume tem retry e voce roda o mesmo comando de novo pra pegar os
+que faltaram. Por isso: 8 threads, SEM --sleep.
+
+Meta realista com 8 threads, UMA regional por vez: ~10-15h no
+total pras 8. Rode os pesados (CIC, Boa Vista) de madrugada, que
+o servidor esta menos carregado.
+
+REGRAS
+------
+- Uma regional por vez (nao rode varias em paralelo - divide o
+  mesmo servidor e deixa tudo mais lento).
+- Caiu no meio? Rode o mesmo comando de novo, ele retoma.
+- So conferir a contagem sem baixar: troque o final por --dry-run.
+- Tudo grava em D:\TCC-data\Ortofotos2019\21\... ; onde as caixas
+  se encostam, o resume nao baixa em dobro.
+
+========================================================
+ COMANDOS - copiar e colar um por vez (PowerShell)
+========================================================
+
+# 1) MATRIZ (centro)  ~85 mil tiles
+python "D:\TCC\baixar_ortofotos_ippuc.py" --acervo Ortofotos2019 --regiao regional_matriz --zoom 21 --saida D:\TCC-data --threads 8 2>&1 | Tee-Object D:\TCC-data\log_matriz.txt
+
+# 2) BOA VISTA (norte)  ~114 mil tiles
+python "D:\TCC\baixar_ortofotos_ippuc.py" --acervo Ortofotos2019 --regiao regional_boa_vista --zoom 21 --saida D:\TCC-data --threads 8 2>&1 | Tee-Object D:\TCC-data\log_boa_vista.txt
+
+# 3) SANTA FELICIDADE (noroeste)  ~94 mil tiles
+python "D:\TCC\baixar_ortofotos_ippuc.py" --acervo Ortofotos2019 --regiao regional_santa_felicidade --zoom 21 --saida D:\TCC-data --threads 8 2>&1 | Tee-Object D:\TCC-data\log_santa_felicidade.txt
+
+# 4) PORTAO  ~61 mil tiles
+python "D:\TCC\baixar_ortofotos_ippuc.py" --acervo Ortofotos2019 --regiao regional_portao --zoom 21 --saida D:\TCC-data --threads 8 2>&1 | Tee-Object D:\TCC-data\log_portao.txt
+
+# 5) BOQUEIRAO (sudeste)  ~85 mil tiles
+python "D:\TCC\baixar_ortofotos_ippuc.py" --acervo Ortofotos2019 --regiao regional_boqueirao --zoom 21 --saida D:\TCC-data --threads 8 2>&1 | Tee-Object D:\TCC-data\log_boqueirao.txt
+
+# 6) CAJURU (leste)  ~95 mil tiles
+python "D:\TCC\baixar_ortofotos_ippuc.py" --acervo Ortofotos2019 --regiao regional_cajuru --zoom 21 --saida D:\TCC-data --threads 8 2>&1 | Tee-Object D:\TCC-data\log_cajuru.txt
+
+# 7) CIC (oeste)  ~132 mil tiles  <- pesado, de madrugada
+python "D:\TCC\baixar_ortofotos_ippuc.py" --acervo Ortofotos2019 --regiao regional_cic --zoom 21 --saida D:\TCC-data --threads 8 2>&1 | Tee-Object D:\TCC-data\log_cic.txt
+
+# 8) PINHEIRINHO (sul)  ~77 mil tiles
+python "D:\TCC\baixar_ortofotos_ippuc.py" --acervo Ortofotos2019 --regiao regional_pinheirinho --zoom 21 --saida D:\TCC-data --threads 8 2>&1 | Tee-Object D:\TCC-data\log_pinheirinho.txt
+
+--------------------------------------------------------
+Se precisar RETOMAR uma que caiu e quiser guardar o log
+anterior, acrescente  -Append  no final do Tee-Object.
+--------------------------------------------------------
