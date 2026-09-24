@@ -1,0 +1,783 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rotulador YOLO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#eef1ef; --panel:#f8faf9; --line:#d3dad6; --ink:#17201c; --muted:#5c6a63;
+  --accent:#0f7a5c; --accent-ink:#ffffff; --stage:#1c2320; --hover:#e3e9e6;
+  --c0:#f2a60c; --c1:#12b5cb; --c2:#e0457b;
+  --ok:#1f8a4c; --warn:#b7791f;
+  --display:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#121715; --panel:#19201d; --line:#2c3632; --ink:#e4ebe7; --muted:#93a39b;
+    --accent:#35b98f; --accent-ink:#06140f; --stage:#0b0f0d; --hover:#222b27;
+    --ok:#4cc27d; --warn:#e0a84a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121715; --panel:#19201d; --line:#2c3632; --ink:#e4ebe7; --muted:#93a39b;
+  --accent:#35b98f; --accent-ink:#06140f; --stage:#0b0f0d; --hover:#222b27;
+  --ok:#4cc27d; --warn:#e0a84a;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 var(--body);margin:0}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+button,input,select{font:inherit;color:inherit}
+.app{height:100%;display:grid;grid-template-rows:auto 1fr;padding-inline:16px;padding-block:12px;gap:12px}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+h1{font:700 22px/1 var(--display);letter-spacing:.01em;margin:0;display:flex;align-items:baseline;gap:8px}
+h1 small{font:500 12px var(--mono);color:var(--muted);letter-spacing:0}
+.spacer{flex:1}
+.btn{border:1px solid var(--line);background:var(--panel);padding:7px 12px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{background:var(--hover)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,.item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.hide-file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.main{display:grid;grid-template-columns:230px minmax(0,1fr) 280px;gap:12px;min-height:0}
+aside{background:var(--panel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.sec{padding:12px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.sec:last-child{border-bottom:0}
+.label{font:600 11px var(--display);text-transform:uppercase;letter-spacing:.09em;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.progress{height:6px;background:var(--hover);border-radius:3px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);width:0}
+.mono{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
+.list{overflow:auto;flex:1;min-height:0;padding:4px}
+.item{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px;border-radius:5px;cursor:pointer;border:0;background:none;width:100%;text-align:left}
+.item:hover{background:var(--hover)}
+.item.on{background:var(--ink);color:var(--bg)}
+.item .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--muted)}
+.dot.done{background:var(--ok);border-color:var(--ok)}
+.dot.empty{background:transparent;border-color:var(--ok);border-style:dashed}
+.stagewrap{position:relative;background:var(--stage);border-radius:8px;overflow:hidden;min-height:300px;touch-action:none}
+canvas{display:block;width:100%;height:100%}
+.hud{position:absolute;left:10px;right:10px;top:10px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none;align-items:flex-start}
+.chip{pointer-events:auto;background:rgba(10,14,12,.78);color:#e8efeb;border-radius:5px;padding:5px 9px;font:500 12px var(--mono);display:inline-flex;gap:8px;align-items:center;backdrop-filter:blur(4px)}
+.chip b{font-weight:500;color:#fff}
+.chip .sw{width:10px;height:10px;border-radius:2px}
+.hud .right{margin-left:auto;display:flex;gap:6px}
+.chip button{background:none;border:0;color:inherit;cursor:pointer;padding:0 2px;font:inherit}
+.drop{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(15,122,92,.25);border:3px dashed var(--accent);color:#fff;font:600 20px var(--display);pointer-events:none}
+.cls{display:grid;grid-template-columns:auto 14px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px;border-radius:6px;border:1px solid transparent;cursor:pointer}
+.cls.on{border-color:var(--ink);background:var(--hover)}
+.cls .key{font:500 11px var(--mono);border:1px solid var(--line);border-radius:3px;padding:1px 5px;background:var(--bg)}
+.cls .sw{width:14px;height:14px;border-radius:3px}
+.cls input{border:0;background:transparent;padding:2px 0;min-width:0;width:100%;border-bottom:1px dashed transparent}
+.cls input:hover,.cls input:focus{border-bottom-color:var(--muted);outline:none}
+.boxes{display:flex;flex-direction:column;gap:4px;max-height:260px;overflow:auto}
+.brow{display:grid;grid-template-columns:10px minmax(0,1fr) auto auto;gap:8px;align-items:center;padding:4px 6px;border-radius:5px;font-size:13px;cursor:pointer}
+.brow.on{background:var(--hover);outline:1px solid var(--ink)}
+.brow .sw{width:10px;height:10px;border-radius:2px}
+.brow select{border:1px solid var(--line);background:var(--bg);border-radius:4px;padding:1px 4px;font-size:12px}
+.x{border:0;background:none;cursor:pointer;color:var(--muted);font-size:16px;line-height:1;padding:2px 4px}
+.x:hover{color:var(--c2)}
+.empty-note{color:var(--muted);font-size:13px}
+.keys{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:12.5px;color:var(--muted)}
+.keys kbd{align-self:start;white-space:nowrap;font:500 11px var(--mono);color:var(--ink);border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:0 5px;background:var(--bg);justify-self:start}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row input[type=number]{width:62px;border:1px solid var(--line);background:var(--bg);border-radius:4px;padding:3px 6px}
+.check{display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:6px;font-size:14px;max-width:calc(100% - 32px);z-index:5}
+.chip .sd{width:8px;height:8px;border-radius:50%;background:#8a9a92}
+.chip.ok .sd{background:#4cc27d}.chip.busy .sd{background:#e0a84a}.chip.err .sd{background:#e0457b}
+.proj{font:600 15px var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sample-tag{background:var(--warn);color:#111;font:600 10px var(--display);letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px}
+@media (max-width:980px){
+  .app{height:auto}
+  html,body{height:auto}
+  .main{grid-template-columns:1fr}
+  .stagewrap{height:62vh;order:-1}
+  .list{max-height:220px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+  <header>
+    <h1>Rotulador YOLO <small>detect · 3 classes</small></h1>
+    <div class="spacer"></div>
+    <button class="btn" id="btnResume" type="button" hidden></button>
+    <button class="btn primary" id="btnProject" type="button" hidden>Abrir pasta do projeto</button>
+    <label class="btn" for="fileIn">Abrir imagens</label>
+    <input id="fileIn" class="hide-file" type="file" multiple accept="image/*,.txt">
+    <label class="btn" for="dirIn" id="lblDir">Abrir pasta</label>
+    <input id="dirIn" class="hide-file" type="file" webkitdirectory multiple>
+    <button class="btn" id="btnLabels" type="button">Só rótulos (.zip)</button>
+    <button class="btn" id="btnExport" type="button">Exportar dataset (.zip)</button>
+  </header>
+
+  <div class="main">
+    <aside>
+      <div class="sec">
+        <div class="proj" id="projName" hidden></div>
+        <div class="label"><span>Imagens</span><span class="mono" id="progTxt">0 / 0</span></div>
+        <div class="progress"><i id="progBar"></i></div>
+      </div>
+      <div class="list" id="imgList" role="listbox" aria-label="Imagens"></div>
+    </aside>
+
+    <div class="stagewrap" id="stage">
+      <canvas id="cv"></canvas>
+      <div class="hud">
+        <span class="chip" id="chipName"></span>
+        <span class="chip" id="chipSave"><span class="sd"></span><span class="st">só neste navegador</span></span>
+        <span class="chip" id="chipCls"><span class="sw"></span><b></b></span>
+        <span class="right">
+          <span class="chip"><button type="button" id="zOut" aria-label="Diminuir zoom">−</button><span id="zTxt">100%</span><button type="button" id="zIn" aria-label="Aumentar zoom">+</button><button type="button" id="zFit">ajustar</button></span>
+          <span class="chip"><button type="button" id="btnPrev" aria-label="Imagem anterior">◀</button><button type="button" id="btnNext" aria-label="Próxima imagem">▶</button></span>
+        </span>
+      </div>
+      <div class="drop" id="drop" hidden>Solte imagens (e .txt de rótulos) aqui</div>
+    </div>
+
+    <aside>
+      <div class="sec">
+        <div class="label"><span>Classes</span><span>id · nome</span></div>
+        <div id="clsList"></div>
+      </div>
+      <div class="sec">
+        <div class="label"><span>Caixas nesta imagem</span><span class="mono" id="boxCount">0</span></div>
+        <div class="boxes" id="boxList"></div>
+        <label class="check"><input type="checkbox" id="chkEmpty"> Revisada, sem objetos <kbd class="mono" style="margin-left:auto">E</kbd></label>
+      </div>
+      <div class="sec">
+        <div class="label"><span>Exportação</span></div>
+        <div class="row"><span>Validação</span><input type="number" id="valPct" min="0" max="50" value="20"><span>%</span></div>
+        <label class="check"><input type="checkbox" id="chkOnlyDone" checked> Só imagens revisadas</label>
+        <button class="btn primary" style="white-space:normal;justify-content:center" id="btnSplit" type="button" hidden>Gerar data.yaml e split na pasta</button>
+        <p class="empty-note" id="fsNote"></p>
+      </div>
+      <div class="sec">
+        <div class="label"><span>Atalhos</span></div>
+        <div class="keys">
+          <kbd>arrastar</kbd><span>desenhar caixa</span>
+          <kbd>1 2 3</kbd><span>classe ativa / trocar a selecionada</span>
+          <kbd>A D</kbd><span>imagem anterior / próxima</span>
+          <kbd>Del</kbd><span>apagar caixa selecionada</span>
+          <kbd>Ctrl Z</kbd><span>desfazer</span>
+          <kbd>roda</kbd><span>zoom no cursor</span>
+          <kbd>espaço</kbd><span>segurar para mover a vista</span>
+          <kbd>F</kbd><span>ajustar à tela</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const COLORS = ['--c0','--c1','--c2'].map(v => getComputedStyle(document.documentElement).getPropertyValue(v).trim());
+const LS = 'rotulador-yolo-v2';
+
+/* Image record:
+   {name, rel, file|handle, img (decoded, may be evicted), w, h,
+    boxes: pixel boxes [{c,x,y,w,h}] once decoded, else null,
+    pending: normalized boxes [{c,cx,cy,w,h}] before first decode,
+    empty, sample} */
+const state = {
+  classes: ['terreno_baldio','estacao_tubo','poste'],
+  active: 0, images: [], cur: -1, sel: -1,
+  view: {s:1, ox:0, oy:0}, undo: [],
+  fs: null   // {root, labelsBase|null, hasImagesDir, name}
+};
+
+// ---------- helpers for box representations ----------
+const nBoxes = im => im.boxes ? im.boxes.length : (im.pending||[]).length;
+const isDone = im => nBoxes(im)>0 || im.empty;
+function normBoxes(im){
+  if(im.boxes) return im.boxes.map(b=>({c:b.c, cx:(b.x+b.w/2)/im.w, cy:(b.y+b.h/2)/im.h, w:b.w/im.w, h:b.h/im.h}));
+  return im.pending || [];
+}
+function yoloLines(im){
+  const L = normBoxes(im).map(b=>`${b.c} ${b.cx.toFixed(6)} ${b.cy.toFixed(6)} ${b.w.toFixed(6)} ${b.h.toFixed(6)}`);
+  return L.join('\n') + (L.length?'\n':'');
+}
+function parseYolo(txt){
+  const out=[];
+  for(const line of txt.split(/\r?\n/)){
+    const p=line.trim().split(/\s+/).map(Number); if(p.length<5||p.some(isNaN)) continue;
+    const [c,cx,cy,w,h]=p; if(c<0||c>2) continue; out.push({c,cx,cy,w,h});
+  }
+  return out;
+}
+function setLabels(im, norm){
+  if(im.img){ im.boxes = norm.map(b=>({c:b.c, x:(b.cx-b.w/2)*im.w, y:(b.cy-b.h/2)*im.h, w:b.w*im.w, h:b.h*im.h})); im.pending=null; }
+  else { im.pending = norm; im.boxes = null; }
+}
+
+// ---------- browser-storage fallback (only when no project folder) ----------
+function loadLS(){ try{ return JSON.parse(localStorage.getItem(LS)) || {}; }catch(e){ return {}; } }
+const key = im => im.name + '|' + (im.file ? im.file.size : 0);
+function saveLS(im){
+  if(state.fs || !im || im.sample) return;
+  try{ const d=loadLS(); d.classes=state.classes; d.labels=d.labels||{};
+    d.labels[key(im)] = {b: normBoxes(im).map(b=>[b.c,+b.cx.toFixed(6),+b.cy.toFixed(6),+b.w.toFixed(6),+b.h.toFixed(6)]), e: im.empty};
+    localStorage.setItem(LS, JSON.stringify(d)); }catch(e){}
+}
+function saveClassesLS(){ try{ const d=loadLS(); d.classes=state.classes; localStorage.setItem(LS, JSON.stringify(d)); }catch(e){} }
+{ const d = loadLS(); if(Array.isArray(d.classes) && d.classes.length===3) state.classes = d.classes; }
+
+// ---------- toast ----------
+let tT; function toast(m, ms=2800){ const t=$('#toast'); t.textContent=m; t.hidden=false; clearTimeout(tT); tT=setTimeout(()=>t.hidden=true, ms); }
+
+// ---------- save indicator ----------
+function saveStatus(kind, text){ const c=$('#chipSave'); c.className='chip '+(kind||''); c.querySelector('.st').textContent=text; }
+
+// ---------- canvas ----------
+const cv = $('#cv'), ctx = cv.getContext('2d'), stage = $('#stage');
+let dpr = 1, W = 0, H = 0;
+function resize(){
+  const r = stage.getBoundingClientRect(); dpr = window.devicePixelRatio || 1;
+  W = r.width; H = r.height; cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); draw();
+}
+new ResizeObserver(resize).observe(stage);
+
+const curIm = () => state.images[state.cur];
+const ready = im => im && im.img && im.boxes;
+function fit(){
+  const im = curIm(); if(!ready(im)) return;
+  const s = Math.min(W/im.w, H/im.h) * 0.96;
+  state.view = {s, ox:(W - im.w*s)/2, oy:(H - im.h*s)/2}; draw();
+}
+function zoomAt(f, sx, sy){
+  const v = state.view; const ns = Math.min(40, Math.max(0.05, v.s*f));
+  const ix = (sx - v.ox)/v.s, iy = (sy - v.oy)/v.s;
+  v.s = ns; v.ox = sx - ix*ns; v.oy = sy - iy*ns; draw();
+}
+const toImg = (sx,sy) => ({x:(sx-state.view.ox)/state.view.s, y:(sy-state.view.oy)/state.view.s});
+const toScr = (x,y) => ({x:x*state.view.s+state.view.ox, y:y*state.view.s+state.view.oy});
+
+let mouse = null, drag = null, spaceDown = false, panMode = false;
+
+function draw(){
+  ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+  const im = curIm();
+  if(!ready(im)){
+    ctx.fillStyle = '#8a9a92'; ctx.font = '500 15px Barlow, system-ui'; ctx.textAlign='center';
+    ctx.fillText(im ? 'Carregando imagem…' : 'Abra a pasta do projeto ou arraste imagens para cá', W/2, H/2); ctx.textAlign='left'; return;
+  }
+  const v = state.view;
+  ctx.imageSmoothingEnabled = v.s < 2;
+  ctx.drawImage(im.img, v.ox, v.oy, im.w*v.s, im.h*v.s);
+  ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.lineWidth=1; ctx.strokeRect(v.ox-.5, v.oy-.5, im.w*v.s+1, im.h*v.s+1);
+  im.boxes.forEach((b,i) => {
+    const p = toScr(b.x,b.y), w=b.w*v.s, h=b.h*v.s, col = COLORS[b.c], on = i===state.sel;
+    ctx.fillStyle = col + (on ? '33' : '1a'); ctx.fillRect(p.x,p.y,w,h);
+    ctx.lineWidth = on ? 2.5 : 1.8; ctx.strokeStyle = col; ctx.strokeRect(p.x,p.y,w,h);
+    const t = state.classes[b.c]; ctx.font='500 11px "JetBrains Mono", monospace';
+    const tw = ctx.measureText(t).width + 8; const ty = p.y-16 < 0 ? p.y : p.y-16;
+    ctx.fillStyle = col; ctx.fillRect(p.x-1, ty, tw, 16); ctx.fillStyle = '#0b0f0d'; ctx.fillText(t, p.x+3, ty+12);
+    if(on){ for(const hd of handles(b)){ ctx.fillStyle='#fff'; ctx.fillRect(hd.x-4,hd.y-4,8,8); ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.strokeRect(hd.x-4,hd.y-4,8,8);} }
+  });
+  if(drag && drag.mode==='new'){
+    const r = norm(drag.a, drag.b); const p = toScr(r.x,r.y);
+    ctx.setLineDash([5,4]); ctx.strokeStyle = COLORS[state.active]; ctx.lineWidth=2;
+    ctx.strokeRect(p.x,p.y,r.w*v.s,r.h*v.s); ctx.setLineDash([]);
+    ctx.fillStyle='rgba(10,14,12,.8)'; ctx.font='500 11px "JetBrains Mono", monospace';
+    const s = `${Math.round(r.w)}×${Math.round(r.h)} px`; ctx.fillRect(p.x, p.y+r.h*v.s+4, ctx.measureText(s).width+8, 16);
+    ctx.fillStyle='#fff'; ctx.fillText(s, p.x+4, p.y+r.h*v.s+16);
+  }
+  if(mouse && !drag && !spaceDown && !panMode){
+    ctx.strokeStyle='rgba(255,255,255,.45)'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(0,mouse.y+.5); ctx.lineTo(W,mouse.y+.5); ctx.moveTo(mouse.x+.5,0); ctx.lineTo(mouse.x+.5,H); ctx.stroke(); ctx.setLineDash([]);
+  }
+  $('#zTxt').textContent = Math.round(v.s*100)+'%';
+}
+function handles(b){
+  const s=toScr(b.x,b.y), e=toScr(b.x+b.w,b.y+b.h), mx=(s.x+e.x)/2, my=(s.y+e.y)/2;
+  return [{k:'nw',x:s.x,y:s.y},{k:'n',x:mx,y:s.y},{k:'ne',x:e.x,y:s.y},{k:'e',x:e.x,y:my},
+          {k:'se',x:e.x,y:e.y},{k:'s',x:mx,y:e.y},{k:'sw',x:s.x,y:e.y},{k:'w',x:s.x,y:my}];
+}
+function norm(a,b){
+  const im=curIm(); const cl=(v,m)=>Math.max(0,Math.min(m,v));
+  const x1=cl(Math.min(a.x,b.x),im.w), y1=cl(Math.min(a.y,b.y),im.h), x2=cl(Math.max(a.x,b.x),im.w), y2=cl(Math.max(a.y,b.y),im.h);
+  return {x:x1,y:y1,w:x2-x1,h:y2-y1};
+}
+function hitBox(p){
+  const im=curIm(); let best=-1, area=Infinity;
+  im.boxes.forEach((b,i)=>{ if(p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h&&b.w*b.h<area){area=b.w*b.h;best=i;} });
+  return best;
+}
+function pushUndo(){ const im=curIm(); if(!ready(im)) return; state.undo.push({i:state.cur, boxes:im.boxes.map(b=>({...b})), empty:im.empty}); if(state.undo.length>200) state.undo.shift(); }
+
+// ---------- pointer ----------
+const pos = e => { const r=cv.getBoundingClientRect(); return {x:e.clientX-r.left, y:e.clientY-r.top}; };
+cv.addEventListener('pointerdown', e => {
+  const im=curIm(); if(!ready(im)) return; cv.setPointerCapture(e.pointerId);
+  const m=pos(e), p=toImg(m.x,m.y);
+  if(e.button===1 || e.button===2 || spaceDown || panMode){ drag={mode:'pan', m, v:{...state.view}}; e.preventDefault(); return; }
+  if(e.button!==0) return;
+  if(state.sel>=0 && im.boxes[state.sel]){
+    const b=im.boxes[state.sel];
+    const h=handles(b).find(h=>Math.abs(h.x-m.x)<8&&Math.abs(h.y-m.y)<8);
+    if(h){ pushUndo(); drag={mode:'resize', k:h.k, orig:{...b}}; return; }
+    if(p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h){ pushUndo(); drag={mode:'move', a:p, orig:{...b}, moved:false}; return; }
+  }
+  drag={mode:'new', a:p, b:p, m};
+});
+cv.addEventListener('pointermove', e => {
+  const m=pos(e); mouse=m; const im=curIm(); if(!ready(im)) return;
+  if(!drag){ updateCursor(m); draw(); return; }
+  const p=toImg(m.x,m.y);
+  if(drag.mode==='pan'){ state.view.ox=drag.v.ox+(m.x-drag.m.x); state.view.oy=drag.v.oy+(m.y-drag.m.y); }
+  else if(drag.mode==='new'){ drag.b=p; }
+  else if(drag.mode==='move'){
+    const b=im.boxes[state.sel], o=drag.orig; drag.moved=true;
+    b.x=Math.max(0,Math.min(im.w-o.w,o.x+p.x-drag.a.x)); b.y=Math.max(0,Math.min(im.h-o.h,o.y+p.y-drag.a.y));
+  } else if(drag.mode==='resize'){
+    const o=drag.orig, k=drag.k; let x1=o.x,y1=o.y,x2=o.x+o.w,y2=o.y+o.h;
+    if(k.includes('w')) x1=p.x; if(k.includes('e')) x2=p.x; if(k.includes('n')) y1=p.y; if(k.includes('s')) y2=p.y;
+    Object.assign(im.boxes[state.sel], norm({x:x1,y:y1},{x:x2,y:y2}));
+  }
+  draw();
+});
+function endDrag(){
+  if(!drag) return; const im=curIm();
+  if(drag.mode==='new'){
+    const r=norm(drag.a,drag.b); const sw=r.w*state.view.s, sh=r.h*state.view.s;
+    if(sw<4 && sh<4){ state.sel = hitBox(drag.a); }
+    else if(r.w>=2 && r.h>=2){ pushUndo(); im.boxes.push({c:state.active, ...r}); im.empty=false; state.sel=im.boxes.length-1; changed(im); }
+  } else if(drag.mode==='move' && !drag.moved){ state.undo.pop(); }
+  else if(drag.mode!=='pan'){ const b=im.boxes[state.sel]; if(b && (b.w<2||b.h<2)){ im.boxes.splice(state.sel,1); state.sel=-1; } changed(im); }
+  drag=null; renderSide(); draw();
+}
+cv.addEventListener('pointerup', endDrag);
+cv.addEventListener('pointercancel', endDrag);
+cv.addEventListener('pointerleave', ()=>{ mouse=null; if(!drag) draw(); });
+cv.addEventListener('contextmenu', e=>e.preventDefault());
+cv.addEventListener('wheel', e => { e.preventDefault(); const m=pos(e); zoomAt(Math.exp(-e.deltaY*0.0015), m.x, m.y); }, {passive:false});
+function updateCursor(m){
+  const im=curIm(); let c = (spaceDown||panMode) ? 'grab' : 'crosshair';
+  if(ready(im) && state.sel>=0 && im.boxes[state.sel] && !spaceDown && !panMode){
+    const b=im.boxes[state.sel]; const h=handles(b).find(h=>Math.abs(h.x-m.x)<8&&Math.abs(h.y-m.y)<8);
+    if(h) c = ({n:'ns',s:'ns',e:'ew',w:'ew',nw:'nwse',se:'nwse',ne:'nesw',sw:'nesw'})[h.k]+'-resize';
+    else { const p=toImg(m.x,m.y); if(p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h) c='move'; }
+  }
+  cv.style.cursor=c;
+}
+
+// ---------- keyboard ----------
+window.addEventListener('keydown', e => {
+  if(e.target.matches('input,select,textarea')) return;
+  const im=curIm();
+  if(e.code==='Space'){ spaceDown=true; cv.style.cursor='grab'; e.preventDefault(); draw(); return; }
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z'){ e.preventDefault(); undo(); return; }
+  if(['1','2','3'].includes(e.key)){ setActive(+e.key-1); return; }
+  const k=e.key.toLowerCase();
+  if(k==='d'||e.key==='ArrowRight'){ go(state.cur+1); e.preventDefault(); }
+  else if(k==='a'||e.key==='ArrowLeft'){ go(state.cur-1); e.preventDefault(); }
+  else if(k==='f'){ fit(); }
+  else if(k==='e'){ toggleEmpty(); }
+  else if(k==='escape'){ state.sel=-1; renderSide(); draw(); }
+  else if((e.key==='Delete'||e.key==='Backspace') && ready(im) && state.sel>=0){ pushUndo(); im.boxes.splice(state.sel,1); state.sel=-1; changed(im); renderSide(); draw(); e.preventDefault(); }
+});
+window.addEventListener('keyup', e => { if(e.code==='Space'){ spaceDown=false; cv.style.cursor='crosshair'; draw(); } });
+
+function undo(){
+  const u=state.undo.pop(); if(!u){ toast('Nada para desfazer'); return; }
+  const im=state.images[u.i]; if(!im) return; im.boxes=u.boxes; im.empty=u.empty;
+  state.sel=-1; changed(im); if(u.i!==state.cur) go(u.i); else { renderSide(); draw(); }
+}
+function setActive(c){
+  state.active=c; const im=curIm();
+  if(ready(im) && state.sel>=0 && im.boxes[state.sel] && im.boxes[state.sel].c!==c){ pushUndo(); im.boxes[state.sel].c=c; changed(im); }
+  renderSide(); draw();
+}
+function toggleEmpty(){
+  const im=curIm(); if(!ready(im)) return;
+  if(im.boxes.length){ toast('Esta imagem já tem caixas'); $('#chkEmpty').checked=false; return; }
+  pushUndo(); im.empty=!im.empty; changed(im); renderSide();
+  if(im.empty) go(state.cur+1);
+}
+function changed(im){ if(!im || im.sample) { renderList(); return; } if(state.fs) queueWrite(im); else saveLS(im); renderList(); }
+
+// ---------- lazy image loading ----------
+const cache=[]; const CACHE_MAX=12;
+async function ensure(im){
+  if(im.img) return;
+  const f = im.file || await im.handle.getFile();
+  const img = await decode(f);
+  im.img=img; im.w=img.width; im.h=img.height;
+  if(!im.boxes) setLabels(im, im.pending||[]);
+  cache.push(im);
+  while(cache.length>CACHE_MAX){ const o=cache.shift(); if(o!==curIm() && !o.sample){ try{ o.img.close && o.img.close(); }catch(e){} o.img=null; } }
+}
+async function decode(f){
+  if('createImageBitmap' in window){ try{ return await createImageBitmap(f); }catch(e){} }
+  return await new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=URL.createObjectURL(f); });
+}
+let goTok=0;
+async function go(i){
+  if(!state.images.length) return;
+  i=Math.max(0,Math.min(state.images.length-1,i)); if(i===state.cur && ready(curIm())) return;
+  state.cur=i; state.sel=-1; const tok=++goTok; const im=curIm();
+  renderList(); renderSide(); draw();
+  const el=document.querySelector(`.item[data-i="${i}"]`); el && el.scrollIntoView({block:'nearest'});
+  try{ await ensure(im); }catch(e){ toast(`Não consegui abrir ${im.name}`); return; }
+  if(tok!==goTok) return;
+  renderSide(); fit();
+  const nx=state.images[i+1]; if(nx && !nx.img) ensure(nx).catch(()=>{});   // pre-load next
+}
+$('#btnPrev').onclick=()=>go(state.cur-1);
+$('#btnNext').onclick=()=>go(state.cur+1);
+$('#zIn').onclick=()=>zoomAt(1.25,W/2,H/2);
+$('#zOut').onclick=()=>zoomAt(0.8,W/2,H/2);
+$('#zFit').onclick=fit;
+
+// ---------- side panels ----------
+function renderList(){
+  const L=$('#imgList'); L.innerHTML='';
+  const frag=document.createDocumentFragment();
+  state.images.forEach((im,i)=>{
+    const n0=nBoxes(im);
+    const b=document.createElement('button'); b.type='button'; b.className='item'+(i===state.cur?' on':''); b.dataset.i=i;
+    b.setAttribute('role','option'); b.setAttribute('aria-selected', i===state.cur);
+    const dot=document.createElement('span'); dot.className='dot'+(n0?' done':im.empty?' empty':'');
+    const nm=document.createElement('span'); nm.className='nm'; nm.textContent=im.rel||im.name; nm.title=im.rel||im.name;
+    const n=document.createElement('span'); n.className='mono'; n.textContent=n0||(im.empty?'∅':'');
+    b.append(dot,nm,n); b.onclick=()=>go(i); frag.append(b);
+  });
+  L.append(frag);
+  const real=state.images.filter(im=>!im.sample), done=real.filter(isDone).length;
+  $('#progTxt').textContent = `${done} / ${real.length}`;
+  $('#progBar').style.width = real.length ? (100*done/real.length)+'%' : '0';
+}
+function renderSide(){
+  const im=curIm();
+  const C=$('#clsList'); C.innerHTML='';
+  const totals=[0,0,0]; state.images.forEach(i=>!i.sample && normBoxes(i).forEach(b=>totals[b.c]++));
+  state.classes.forEach((name,c)=>{
+    const row=document.createElement('div'); row.className='cls'+(c===state.active?' on':'');
+    const k=document.createElement('span'); k.className='key'; k.textContent=c+1;
+    const sw=document.createElement('span'); sw.className='sw'; sw.style.background=COLORS[c];
+    const inp=document.createElement('input'); inp.id='cls'+c; inp.value=name; inp.setAttribute('aria-label',`Nome da classe ${c}`);
+    inp.onchange=()=>{ const v=inp.value.trim().replace(/\s+/g,'_'); if(v){ state.classes[c]=v; inp.value=v; saveClasses(); renderSide(); draw(); } else inp.value=state.classes[c]; };
+    inp.onkeydown=e=>{ if(e.key==='Enter') inp.blur(); };
+    const t=document.createElement('span'); t.className='mono'; t.textContent=totals[c]; t.title='caixas em todas as imagens';
+    row.append(k,sw,inp,t); row.onclick=e=>{ if(e.target!==inp) setActive(c); }; C.append(row);
+  });
+  const cc=$('#chipCls'); cc.querySelector('.sw').style.background=COLORS[state.active]; cc.querySelector('b').textContent=`${state.active} · ${state.classes[state.active]}`;
+  const cn=$('#chipName'); cn.innerHTML='';
+  if(im){ if(im.sample){ const t=document.createElement('span'); t.className='sample-tag'; t.textContent='exemplo'; cn.append(t); }
+    cn.append(`${im.rel||im.name}` + (im.img?` · ${im.w}×${im.h}`:'')); cn.hidden=false; } else cn.hidden=true;
+  const B=$('#boxList'); B.innerHTML='';
+  $('#boxCount').textContent = im ? nBoxes(im) : 0;
+  $('#chkEmpty').checked = !!(im && im.empty); $('#chkEmpty').disabled = !ready(im) || im.boxes.length>0;
+  if(!ready(im) || !im.boxes.length){ const p=document.createElement('div'); p.className='empty-note'; p.textContent= im ? 'Arraste sobre a imagem para criar uma caixa.' : 'Nenhuma imagem aberta.'; B.append(p); return; }
+  im.boxes.forEach((b,i)=>{
+    const r=document.createElement('div'); r.className='brow'+(i===state.sel?' on':'');
+    const sw=document.createElement('span'); sw.className='sw'; sw.style.background=COLORS[b.c];
+    const d=document.createElement('span'); d.className='mono'; d.textContent=`${Math.round(b.w)}×${Math.round(b.h)}`; d.title=`x ${Math.round(b.x)}, y ${Math.round(b.y)}`;
+    const s=document.createElement('select'); s.id='bsel'+i; s.setAttribute('aria-label','Classe da caixa');
+    state.classes.forEach((n,c)=>{ const o=document.createElement('option'); o.value=c; o.textContent=`${c} ${n}`; o.selected=c===b.c; s.append(o); });
+    s.onchange=()=>{ pushUndo(); b.c=+s.value; changed(im); renderSide(); draw(); };
+    const x=document.createElement('button'); x.type='button'; x.className='x'; x.textContent='×'; x.setAttribute('aria-label','Apagar caixa');
+    x.onclick=ev=>{ ev.stopPropagation(); pushUndo(); im.boxes.splice(i,1); state.sel=-1; changed(im); renderSide(); draw(); };
+    r.append(sw,d,s,x); r.onclick=ev=>{ if(ev.target===s) return; state.sel=i; renderSide(); draw(); }; B.append(r);
+  });
+}
+$('#chkEmpty').onchange=toggleEmpty;
+function saveClasses(){ if(state.fs) writeText(state.fs.root, 'classes.txt', state.classes.join('\n')+'\n').catch(()=>saveStatus('err','erro ao salvar classes.txt')); else saveClassesLS(); }
+
+// ---------- project folder (File System Access API): saves every edit to disk ----------
+const FS_OK = 'showDirectoryPicker' in window && window.self === window.top;
+const IMG_RE=/\.(jpe?g|png|webp|bmp|gif|tiff?)$/i;
+const base = n => n.replace(/^.*[\\/]/,'').replace(/\.[^.]+$/,'');
+const stemRel = rel => rel.replace(/\.[^./]+$/,'');
+
+function idb(){ return new Promise((res,rej)=>{ const r=indexedDB.open('rotulador-yolo',1); r.onupgradeneeded=()=>r.result.createObjectStore('kv'); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function idbSet(k,v){ try{ const db=await idb(); await new Promise((res,rej)=>{ const t=db.transaction('kv','readwrite'); t.objectStore('kv').put(v,k); t.oncomplete=res; t.onerror=()=>rej(t.error); }); }catch(e){} }
+async function idbGet(k){ try{ const db=await idb(); return await new Promise((res,rej)=>{ const t=db.transaction('kv'); const q=t.objectStore('kv').get(k); q.onsuccess=()=>res(q.result); q.onerror=()=>rej(q.error); }); }catch(e){ return null; } }
+
+async function walkDir(dir, prefix, out, skipTop){
+  for await (const [name, h] of dir.entries()){
+    if(name.startsWith('.')) continue;
+    if(h.kind==='directory'){
+      if(skipTop && !prefix && ['labels','runs','dataset_yolo','node_modules'].includes(name)) continue;
+      await walkDir(h, prefix+name+'/', out, skipTop);
+    } else out.push({rel: prefix+name, handle:h});
+  }
+}
+async function subdir(dir, parts, create){ for(const p of parts){ dir = await dir.getDirectoryHandle(p, {create}); } return dir; }
+async function writeText(dir, name, text){ const fh=await dir.getFileHandle(name,{create:true}); const w=await fh.createWritable(); await w.write(text); await w.close(); }
+async function readText(dir, name){ try{ const fh=await dir.getFileHandle(name); return await (await fh.getFile()).text(); }catch(e){ return null; } }
+
+// where the label of an image lives: images/<rel> -> labels/<rel>.txt ; loose images -> same folder as the image
+function labelLoc(im){
+  const parts = stemRel(im.rel).split('/'); const file = parts.pop()+'.txt';
+  return state.fs.hasImagesDir ? {dir: state.fs.labelsBase, parts, file} : {dir: state.fs.root, parts, file};
+}
+const timers=new Map(); let inflight=0;
+function queueWrite(im){
+  clearTimeout(timers.get(im)); saveStatus('busy','salvando…');
+  timers.set(im, setTimeout(()=>{ timers.delete(im); writeLabel(im); }, 300));
+}
+async function writeLabel(im){
+  inflight++;
+  try{
+    const L=labelLoc(im);
+    const d = await subdir(L.dir, L.parts, true);
+    if(!nBoxes(im) && !im.empty){ try{ await d.removeEntry(L.file); }catch(e){} }
+    else await writeText(d, L.file, yoloLines(im));
+    inflight--; if(!inflight && !timers.size) saveStatus('ok','salvo na pasta');
+  }catch(e){ inflight--; saveStatus('err','erro ao salvar'); toast('Não consegui gravar o rótulo: '+(e && e.message || e), 5000); }
+}
+window.addEventListener('beforeunload', e=>{ if(timers.size || inflight){ e.preventDefault(); e.returnValue=''; } });
+
+async function openProject(root){
+  if((await root.queryPermission({mode:'readwrite'}))!=='granted' && (await root.requestPermission({mode:'readwrite'}))!=='granted'){ toast('Sem permissão de escrita na pasta'); return; }
+  saveStatus('busy','lendo a pasta…');
+  let imgBase=root, hasImagesDir=false;
+  try{ imgBase = await root.getDirectoryHandle('images'); hasImagesDir=true; }catch(e){}
+  const entries=[]; await walkDir(imgBase, '', entries, !hasImagesDir);
+  const imgs = entries.filter(e=>IMG_RE.test(e.rel)).sort((a,b)=>a.rel.localeCompare(b.rel,undefined,{numeric:true}));
+  if(!imgs.length){ saveStatus('', 'só neste navegador'); toast('Não achei imagens nessa pasta (nem em images/)', 5000); return; }
+  state.fs = {root, hasImagesDir, name: root.name, labelsBase: hasImagesDir ? await root.getDirectoryHandle('labels',{create:true}) : null};
+  const ct = await readText(root, 'classes.txt');
+  if(ct){ const n=ct.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); if(n.length>=3) state.classes=n.slice(0,3); }
+  else await writeText(root,'classes.txt',state.classes.join('\n')+'\n');
+  // read existing labels
+  const txtMap=new Map();
+  if(hasImagesDir){ const le=[]; await walkDir(state.fs.labelsBase,'',le,false); le.filter(e=>/\.txt$/i.test(e.rel)).forEach(e=>txtMap.set(e.rel.replace(/\.txt$/i,''), e.handle)); }
+  else entries.filter(e=>/\.txt$/i.test(e.rel)).forEach(e=>txtMap.set(e.rel.replace(/\.txt$/i,''), e.handle));
+  const list=[];
+  for(const e of imgs){
+    const im={name: e.rel.split('/').pop(), rel:e.rel, handle:e.handle, img:null, boxes:null, pending:[], empty:false};
+    const th=txtMap.get(stemRel(e.rel));
+    if(th){ const t=await (await th.getFile()).text(); im.pending=parseYolo(t); im.empty=!im.pending.length; }
+    list.push(im);
+  }
+  cache.length=0; state.images=list; state.undo=[]; state.cur=-1;
+  await idbSet('project', root);
+  $('#projName').textContent=root.name; $('#projName').hidden=false; $('#btnResume').hidden=true;
+  $('#btnSplit').hidden=false;
+  $('#fsNote').textContent = hasImagesDir ? 'Rótulos em labels/, espelhando images/.' : 'Rótulos gravados ao lado de cada imagem.';
+  saveStatus('ok','salvo na pasta');
+  const done=list.filter(isDone).length;
+  toast(`${root.name}: ${list.length} imagens, ${done} já rotuladas`);
+  renderList(); renderSide();
+  const first=list.findIndex(im=>!isDone(im)); go(first>=0?first:0);
+}
+$('#btnProject').onclick=async()=>{
+  try{ const root=await window.showDirectoryPicker({id:'rotulador', mode:'readwrite'}); await openProject(root); }
+  catch(e){ if(e && e.name!=='AbortError') toast('Não consegui abrir a pasta: '+e.message, 5000); }
+};
+$('#btnResume').onclick=async()=>{ const h=await idbGet('project'); if(h) try{ await openProject(h); }catch(e){ toast('Não consegui reabrir: '+e.message, 5000); } };
+
+// data.yaml + train.txt/val.txt written in the project folder (no copying of images)
+function hashFrac(s){ let h=2166136261; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return (h>>>0)/4294967296; }
+function splitSet(set){
+  const pct=Math.max(0,Math.min(50,+$('#valPct').value||0))/100;
+  const vals=new Set(set.filter(im=>hashFrac(im.rel||im.name)<pct));
+  if(pct>0 && !vals.size && set.length>1) vals.add(set[set.length-1]);
+  return vals;
+}
+const exportSet = () => state.images.filter(im=>!im.sample && (!$('#chkOnlyDone').checked || isDone(im)));
+function dataYaml(train, val){
+  return `# Gerado pelo Rotulador YOLO em ${new Date().toISOString().slice(0,10)}
+# Passe o caminho ABSOLUTO deste arquivo para o Ultralytics (ou rode treinar.py nesta pasta).
+train: ${train}
+val: ${val}
+
+nc: ${state.classes.length}
+names:
+${state.classes.map((n,i)=>`  ${i}: ${n}`).join('\n')}
+`;
+}
+const TRAIN_PY = `# Treina o YOLO com o dataset desta pasta. Uso:  python treinar.py
+from pathlib import Path
+from ultralytics import YOLO
+
+AQUI = Path(__file__).resolve().parent
+modelo = YOLO("yolo26n.pt")  # troque por yolo26s.pt / yolo26m.pt se a GPU aguentar
+modelo.train(data=str(AQUI / "data.yaml"), imgsz=1024, epochs=100, batch=16, project=str(AQUI / "runs"))
+`;
+$('#btnSplit').onclick=async()=>{
+  if(!state.fs) return; const set=exportSet();
+  if(!set.length){ toast('Nenhuma imagem revisada ainda'); return; }
+  const vals=splitSet(set); const pre = state.fs.hasImagesDir ? './images/' : './';
+  const tr=set.filter(im=>!vals.has(im)).map(im=>pre+im.rel), va=set.filter(im=>vals.has(im)).map(im=>pre+im.rel);
+  try{
+    await writeText(state.fs.root,'train.txt',tr.join('\n')+'\n');
+    await writeText(state.fs.root,'val.txt',va.join('\n')+'\n');
+    await writeText(state.fs.root,'data.yaml',dataYaml('train.txt','val.txt'));
+    await writeText(state.fs.root,'classes.txt',state.classes.join('\n')+'\n');
+    if(await readText(state.fs.root,'treinar.py')===null) await writeText(state.fs.root,'treinar.py',TRAIN_PY);
+    toast(`data.yaml, train.txt (${tr.length}) e val.txt (${va.length}) gravados em ${state.fs.name}`, 4500);
+  }catch(e){ toast('Erro ao gravar: '+e.message, 5000); }
+};
+
+// ---------- loading loose files (no folder access): labels kept in this browser ----------
+async function loadFiles(list){
+  const files=[...list]; if(!files.length) return;
+  if(state.fs){ toast('Feche a pasta do projeto (recarregue a página) para abrir imagens soltas', 5000); return; }
+  const imgs=files.filter(f=>IMG_RE.test(f.name)||f.type.startsWith('image/'));
+  const txts=files.filter(f=>/\.txt$/i.test(f.name));
+  const classesTxt=txts.find(f=>/^classes\.txt$/i.test(f.name.replace(/^.*[\\/]/,'')));
+  if(classesTxt){ const n=(await classesTxt.text()).split(/\r?\n/).map(s=>s.trim()).filter(Boolean); if(n.length>=3){ state.classes=n.slice(0,3); saveClassesLS(); } }
+  const txtMap=new Map(txts.map(f=>[base(f.name),f]));
+  if(!imgs.length && txts.length){
+    let n=0; for(const im of state.images){ const t=txtMap.get(base(im.name)); if(t){ const nb=parseYolo(await t.text()); setLabels(im,nb); im.empty=!nb.length; saveLS(im); n++; } }
+    toast(`${n} arquivo(s) de rótulo aplicados`); renderList(); renderSide(); draw(); return;
+  }
+  state.images = state.images.filter(im=>!im.sample);
+  const saved=(loadLS().labels)||{}; const names=new Set(state.images.map(i=>i.name));
+  imgs.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
+  for(const f of imgs){
+    let name=f.name; if(names.has(name)){ let k=2; const st=base(f.name), ext=f.name.slice(st.length); while(names.has(st+'_'+k+ext)) k++; name=st+'_'+k+ext; }
+    const im={name, file:f, img:null, boxes:null, pending:[], empty:false};
+    const t=txtMap.get(base(f.name));
+    if(t){ im.pending=parseYolo(await t.text()); im.empty=!im.pending.length; }
+    else { const s=saved[key(im)]; if(s){ im.pending=s.b.map(a=>({c:a[0],cx:a[1],cy:a[2],w:a[3],h:a[4]})); im.empty=!!s.e; } }
+    state.images.push(im); names.add(name);
+  }
+  toast(`${imgs.length} imagem(ns) aberta(s). Rótulos ficam guardados neste navegador; use "Só rótulos" como backup.`, 4500);
+  state.undo=[]; state.cur=-1; renderList(); renderSide();
+  if(state.images.length){ const first = state.images.findIndex(im=>!isDone(im)); go(first>=0?first:0); }
+}
+$('#fileIn').onchange=e=>{ loadFiles(e.target.files); e.target.value=''; };
+$('#dirIn').onchange=e=>{ loadFiles(e.target.files); e.target.value=''; };
+let dragDepth=0;
+stage.addEventListener('dragenter',e=>{e.preventDefault(); dragDepth++; $('#drop').hidden=false;});
+stage.addEventListener('dragover',e=>e.preventDefault());
+stage.addEventListener('dragleave',()=>{ if(--dragDepth<=0){dragDepth=0; $('#drop').hidden=true;} });
+stage.addEventListener('drop',async e=>{
+  e.preventDefault(); dragDepth=0; $('#drop').hidden=true;
+  const items=[...(e.dataTransfer.items||[])];
+  // a folder dropped in Chrome/Edge can be opened as the project (saves to disk)
+  if(FS_OK && items.length===1 && items[0].getAsFileSystemHandle){
+    try{ const h=await items[0].getAsFileSystemHandle(); if(h && h.kind==='directory'){ await openProject(h); return; } }catch(err){}
+  }
+  const entries=items.map(i=>i.webkitGetAsEntry&&i.webkitGetAsEntry()).filter(Boolean);
+  if(entries.some(x=>x.isDirectory)){ const out=[]; for(const it of entries) await walk(it,out); loadFiles(out); }
+  else loadFiles(e.dataTransfer.files);
+});
+async function walk(entry,out){
+  if(entry.isFile){ out.push(await new Promise((r,j)=>entry.file(r,j))); return; }
+  const rd=entry.createReader(); let batch;
+  do{ batch=await new Promise((r,j)=>rd.readEntries(r,j)); for(const e of batch) await walk(e,out); }while(batch.length);
+}
+
+// ---------- zip export ----------
+function readme(n){
+  return `Dataset YOLO (detecção) — ${n.tr} imagens de treino, ${n.va} de validação.
+
+  images/train, images/val   imagens
+  labels/train, labels/val   um .txt por imagem: classe cx cy w h (normalizado 0–1)
+  data.yaml, classes.txt, treinar.py
+
+Treinar:  pip install -U ultralytics  e depois  python treinar.py
+Imagem sem objetos tem .txt vazio: entra como exemplo negativo.
+`;
+}
+async function doExport(withImages){
+  const set=exportSet();
+  if(!set.length){ toast(state.images.some(i=>!i.sample)?'Nenhuma imagem revisada para exportar':'Abra suas imagens antes de exportar'); return; }
+  const vals=splitSet(set); const files=[], enc=new TextEncoder(); let tr=0, va=0;
+  toast('Montando o arquivo…');
+  for(const im of set){
+    const split = vals.has(im) ? 'val' : 'train'; split==='val'?va++:tr++;
+    const flat = (im.rel||im.name).replace(/\//g,'__');
+    if(withImages){ const f = im.file || await im.handle.getFile(); files.push({name:`dataset_yolo/images/${split}/${flat}`, data:new Uint8Array(await f.arrayBuffer())}); }
+    files.push({name:`dataset_yolo/labels/${split}/${base(flat)}.txt`, data:enc.encode(yoloLines(im))});
+  }
+  files.push({name:'dataset_yolo/data.yaml', data:enc.encode(dataYaml('images/train','images/val'))});
+  files.push({name:'dataset_yolo/classes.txt', data:enc.encode(state.classes.join('\n')+'\n')});
+  files.push({name:'dataset_yolo/treinar.py', data:enc.encode(TRAIN_PY)});
+  files.push({name:'dataset_yolo/LEIA-ME.txt', data:enc.encode(readme({tr,va}))});
+  await saveFile(withImages ? 'dataset_yolo.zip' : 'rotulos_yolo.zip', makeZip(files), `${tr} treino · ${va} validação`);
+}
+$('#btnExport').onclick=()=>doExport(true);
+$('#btnLabels').onclick=()=>doExport(false);
+
+let dlP = null;
+try{ dlP = window.claude && window.claude.use ? window.claude.use('downloads') : null; }catch(e){ dlP=null; }
+async function saveFile(name, blob, info){
+  let dl=null; try{ dl = dlP ? await dlP : null; }catch(e){}
+  if(dl){
+    try{ await dl.save({filename:name, data:blob}); toast(`Salvo: ${name} (${info})`); }
+    catch(err){ toast(err && err.code==='declined' ? 'Download cancelado' : 'Não foi possível salvar aqui: ' + (err && err.message || 'erro')); }
+    return;
+  }
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.append(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000); toast(`${name} gerado (${info})`);
+}
+const CRC=(()=>{ const t=new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c=c&1?0xEDB88320^(c>>>1):c>>>1; t[n]=c>>>0; } return t; })();
+function crc32(u){ let c=0xFFFFFFFF; for(let i=0;i<u.length;i++) c=CRC[(c^u[i])&0xFF]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }
+function makeZip(files){
+  const enc=new TextEncoder(), parts=[], central=[]; let off=0;
+  const d=new Date(), time=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1), date=((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate();
+  for(const f of files){
+    const nm=enc.encode(f.name), crc=crc32(f.data), sz=f.data.length;
+    const h=new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true); h.setUint16(4,20,true); h.setUint16(6,0x0800,true); h.setUint16(8,0,true);
+    h.setUint16(10,time,true); h.setUint16(12,date,true); h.setUint32(14,crc,true); h.setUint32(18,sz,true); h.setUint32(22,sz,true);
+    h.setUint16(26,nm.length,true); h.setUint16(28,0,true);
+    parts.push(h.buffer,nm,f.data);
+    const c=new DataView(new ArrayBuffer(46));
+    c.setUint32(0,0x02014b50,true); c.setUint16(4,20,true); c.setUint16(6,20,true); c.setUint16(8,0x0800,true); c.setUint16(10,0,true);
+    c.setUint16(12,time,true); c.setUint16(14,date,true); c.setUint32(16,crc,true); c.setUint32(20,sz,true); c.setUint32(24,sz,true);
+    c.setUint16(28,nm.length,true); c.setUint32(42,off,true);
+    central.push(c.buffer,nm); off+=30+nm.length+sz;
+  }
+  const cs=central.reduce((a,b)=>a+(b.byteLength),0);
+  const e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true); e.setUint16(8,files.length,true); e.setUint16(10,files.length,true); e.setUint32(12,cs,true); e.setUint32(16,off,true);
+  return new Blob([...parts,...central,e.buffer],{type:'application/zip'});
+}
+
+// ---------- sample image (synthetic aerial tile) ----------
+function makeSample(){
+  const w=1024,h=768,c=document.createElement('canvas'); c.width=w; c.height=h; const g=c.getContext('2d');
+  let seed=7; const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  g.fillStyle='#6f7466'; g.fillRect(0,0,w,h);
+  g.fillStyle='#4b4f4d'; g.fillRect(0,340,w,58); g.fillRect(470,0,54,h);
+  g.strokeStyle='#d9d4c2'; g.setLineDash([18,14]); g.lineWidth=2;
+  g.beginPath(); g.moveTo(0,369); g.lineTo(w,369); g.moveTo(497,0); g.lineTo(497,h); g.stroke(); g.setLineDash([]);
+  g.fillStyle='#a9a79d'; [[0,326,470,14],[524,326,w,14],[0,398,470,12],[524,398,w,12],[456,0,14,326],[524,0,14,326],[456,410,14,h],[524,410,14,h]].forEach(r=>g.fillRect(...r));
+  const roof=(x,y,ww,hh)=>{ const col=['#9a5a44','#b06b4f','#8f8c86','#c7c2b6','#7b4a3a'][Math.floor(rnd()*5)]; g.fillStyle=col; g.fillRect(x,y,ww,hh); g.fillStyle='rgba(0,0,0,.18)'; g.fillRect(x,y+hh/2,ww,hh/2); g.fillStyle='rgba(0,0,0,.3)'; g.fillRect(x+ww,y+6,6,hh); };
+  for(let i=0;i<4;i++) roof(30+i*105,40+rnd()*30,70+rnd()*20,90+rnd()*40);
+  for(let i=0;i<3;i++) roof(40+i*140,450+rnd()*40,90,110+rnd()*30);
+  for(let i=0;i<2;i++) roof(570+i*130,60+rnd()*20,95,120);
+  g.fillStyle='#8a8a52'; g.fillRect(575,440,380,270);
+  for(let i=0;i<900;i++){ g.fillStyle=`rgba(${60+rnd()*60|0},${80+rnd()*50|0},${30+rnd()*30|0},.55)`; g.beginPath(); g.arc(575+rnd()*380,440+rnd()*270,2+rnd()*6,0,7); g.fill(); }
+  g.fillStyle='#a58f6a'; g.beginPath(); g.ellipse(760,600,70,35,0.3,0,7); g.fill();
+  for(let i=0;i<14;i++){ const x=rnd()*w, y=rnd()<.5?rnd()*300:420+rnd()*330; if(x>560&&y>430) continue; g.fillStyle='#2f4a2a'; g.beginPath(); g.arc(x,y,12+rnd()*14,0,7); g.fill(); g.fillStyle='rgba(120,160,90,.35)'; g.beginPath(); g.arc(x-4,y-4,7+rnd()*6,0,7); g.fill(); }
+  g.fillStyle='#3a3f44'; g.fillRect(640,300,120,22); g.fillStyle='#8fb7c9'; g.fillRect(645,303,110,16); g.fillStyle='rgba(0,0,0,.35)'; g.fillRect(640,322,120,5);
+  const pole=(x,y)=>{ g.strokeStyle='rgba(0,0,0,.45)'; g.lineWidth=3; g.beginPath(); g.moveTo(x,y); g.lineTo(x+38,y+22); g.stroke(); g.fillStyle='#e5e2d8'; g.beginPath(); g.arc(x,y,4,0,7); g.fill(); };
+  pole(462,120); pole(462,240); pole(532,450); pole(532,620); pole(250,332);
+  return new Promise(res=>c.toBlob(b=>res(b),'image/png'));
+}
+async function boot(){
+  renderSide(); renderList();
+  if(FS_OK){
+    $('#btnProject').hidden=false; $('#lblDir').hidden=true;
+    const h=await idbGet('project');
+    if(h){ const b=$('#btnResume'); b.textContent='Retomar: '+h.name; b.hidden=false; }
+    $('#fsNote').textContent='Com a pasta do projeto aberta, cada edição é gravada no disco na hora.';
+  } else {
+    $('#fsNote').textContent='Para gravar direto numa pasta, abra o arquivo rotulador-yolo.html no Chrome ou Edge do seu computador.';
+  }
+  const blob=await makeSample(); const img=await decode(blob);
+  if(state.images.length) return;   // user already opened something
+  state.images=[{name:'exemplo_ortofoto.png', file:blob, img, w:img.width, h:img.height, sample:true, empty:false, pending:null,
+    boxes:[{c:0,x:575,y:440,w:380,h:270},{c:1,x:636,y:296,w:128,h:34},{c:2,x:454,y:112,w:16,h:16},{c:2,x:454,y:232,w:16,h:16},{c:2,x:524,y:442,w:16,h:16}]}];
+  state.cur=-1; renderList(); go(0);
+}
+resize(); boot();
+})();
+</script>
