@@ -1,0 +1,12 @@
+Dataset YOLO (detecção) — 272 imagens de treino, 76 de validação.
+(Atualizado em 2026-10-04: rodada original de 150 imagens + 198 novas da
+revisão de Modelo/revisao_200, validadas manualmente no rotulador-yolo.html
+depois de um primeiro treino do modelo — 2 imagens da revisão coincidiam
+com a rodada original e foram descartadas pra não duplicar.)
+
+  images/train, images/val   imagens
+  labels/train, labels/val   um .txt por imagem: classe x1 y1 x2 y2 x3 y3 x4 y4 (normalizado 0–1)
+  data.yaml, classes.txt, treinar.py
+
+Treinar:  pip install -U ultralytics  e depois  python treinar.py
+Imagem sem objetos tem .txt vazio: entra como exemplo negativo.

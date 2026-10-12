@@ -1,0 +1,3 @@
+area_NãoEdificada
+ponto_onibus
+faixa_pedestre

@@ -1,0 +1,344 @@
+﻿==============================================================================
+TCC "QUADRA A QUADRA" - COMO TUDO FUNCIONA
+De onde vem cada dado, o que já foi baixado e como refazer do zero.
+==============================================================================
+Atualizado em: 02/09/2026
+Pasta dos programas : D:\TCC
+Pasta dos dados     : D:\TCC-data
+
+
+==============================================================================
+1. A IDEIA EM UMA FRASE
+==============================================================================
+
+Baixamos a foto aérea de Curitiba pedaço por pedaço (os "tiles") e, para cada
+pedaço, descobrimos QUAL RUA ele mostra - usando os mapas oficiais da
+prefeitura, sem precisar consultar a internet uma vez por foto.
+
+O resultado é uma planilha: uma linha por foto, com o nome da rua, o bairro,
+a regional, o CEP e a quadra.
+
+
+==============================================================================
+2. DE ONDE VEM TUDO (todas as fontes)
+==============================================================================
+
+Tudo vem do GeoCuritiba, o servidor de mapas do IPPUC (a prefeitura).
+É público, não precisa de senha, e tem endereço fixo:
+
+    https://geocuritiba.ippuc.org.br/server/rest/services
+
+Dentro dele usamos 3 coisas:
+
+  (A) AS FOTOS AÉREAS - "Ortofotos 2019"
+      Hosted/Ortofotos2019/MapServer
+      São fotos de avião de 2019, já cortadas em quadradinhos de 256x256
+      pixels. Cada quadradinho = 1 arquivo .jpg.
+
+  (B) OS EIXOS DE RUA - "Trecho Logradouro"
+      GeoCuritiba/Publico_GeoCuritiba_MapaCadastral/MapServer/11
+      É o desenho de todas as ruas da cidade como linhas. Cada linha traz:
+      nome oficial da rua, bairro, regional, CEP e a hierarquia da via
+      (1 = estrutural, grande; 4 = local, rua de bairro).
+
+  (C) AS QUADRAS - "Quadra Cadastral"
+      GeoCuritiba/Publico_GeoCuritiba_MapaCadastral/MapServer/17
+      São os quarteirões desenhados como polígonos, cada um com um código.
+
+  DICA: para ver qualquer camada dessas no navegador, é só colar o endereço
+  e acrescentar "?f=json" no final. O servidor responde a lista de campos.
+
+
+==============================================================================
+3. O QUE JÁ ESTÁ BAIXADO EM D:\TCC-data
+==============================================================================
+
+  Ortofotos2019\20\<x>\<y>.jpg .... 180.319 fotos, 2,4 GB
+      As fotos. A pasta "20" é o nível de zoom.
+      Cada foto cobre 34,5 metros x 34,5 metros do chão.
+      A resolução é de 13,5 cm por pixel.
+
+  eixos_logradouro.geojson ........ 24 MB
+      As ruas. 42.236 trechos, formando 9.317 ruas com nome,
+      num total de 4.567 km de malha viária.
+
+  quadras_cadastrais.geojson ...... 30 MB
+      Os quarteirões. 16.606 quadras.
+
+  tiles_rotulos.csv ............... 34 MB   <- resultado do estágio 2
+  tiles_rotulos.jsonl ............. 73 MB   (o mesmo, em outro formato)
+  tiles_rotulos_quadra.csv ........ 71 MB   <- RESULTADO FINAL (use este)
+
+  Os arquivos log_*.txt e manifesto_*.json são do download das fotos:
+  registram o que foi baixado em cada regional.
+
+
+==============================================================================
+4. COMO REFAZER TUDO DO ZERO (os comandos, na ordem)
+==============================================================================
+
+Todos os programas usam só o Python padrão. Não precisa instalar nada.
+Rode de dentro da pasta D:\TCC.
+
+  PASSO 1 - baixar as fotos aéreas (já feito; leva horas)
+  -------------------------------------------------------
+      python baixar_ortofotos_ippuc.py --regiao regional_matriz --zoom 20
+
+      Ou use o rodar_regionais.ps1, que faz todas as regionais em sequência.
+      O programa PULA o que já existe no disco, então pode interromper e
+      rodar de novo sem perder nada.
+
+  PASSO 2 - baixar as ruas (23 segundos)
+  --------------------------------------
+      python baixar_eixos_logradouro.py
+
+      Gera: D:\TCC-data\eixos_logradouro.geojson
+
+  PASSO 3 - baixar as quadras (8 segundos)
+  ----------------------------------------
+      python baixar_eixos_logradouro.py --camada 17
+
+      Gera: D:\TCC-data\quadras_cadastrais.geojson
+
+  PASSO 4 - descobrir a rua de cada foto (10 segundos)
+  ----------------------------------------------------
+      python rotular_tiles.py --formato ambos
+
+      Gera: D:\TCC-data\tiles_rotulos.csv (e .jsonl)
+
+  PASSO 5 - completar com a quadra (15 segundos)
+  ----------------------------------------------
+      python rotular_quadras.py
+
+      Gera: D:\TCC-data\tiles_rotulos_quadra.csv   <- o arquivo final
+
+  Repare: baixar as fotos leva horas, mas os passos 2 a 5 juntos levam menos
+  de 1 minuto. Isso porque baixamos os mapas UMA VEZ e depois fazemos toda a
+  conta no próprio computador. Se fosse perguntar a rua de cada foto pela
+  internet, seriam 180 mil consultas.
+
+
+==============================================================================
+5. COMO O PROGRAMA SABE QUAL RUA ESTÁ NA FOTO
+==============================================================================
+
+Explicando sem fórmula:
+
+  PRIMEIRO: cada foto tem um endereço no mapa.
+  Os nomes das pastas não são aleatórios. O arquivo 20\380516\601051.jpg
+  quer dizer "zoom 20, coluna 380516, linha 601051" - e existe uma conta
+  exata que transforma isso em latitude e longitude. Ou seja: sabemos
+  exatamente que retângulo do mundo real cada foto mostra.
+
+  SEGUNDO: colocamos as ruas no mesmo sistema.
+  Pegamos o desenho das ruas e convertemos para esse mesmo sistema de
+  coluna/linha. Agora ruas e fotos estão no mesmo "papel quadriculado".
+
+  TERCEIRO: vemos que pedaço de rua cai dentro de cada quadradinho.
+  Para cada rua, medimos QUANTOS METROS dela ficam dentro daquela foto.
+
+  QUARTO: a rua da foto é a que tem MAIS METROS dentro dela.
+  Isso é importante: não é "a rua que aparece", é "a rua que domina".
+  Numa esquina aparecem 2 ou 3 ruas - a planilha guarda todas, com os
+  metros de cada uma, mas elege a principal.
+
+  QUINTO (o problema do miolo de quadra):
+  A foto tem 34,5 metros de lado, MENOR que a maioria dos quarteirões de
+  Curitiba. Então a foto que cai no meio do quarteirão (fundo de quintal,
+  telhado de galpão, pátio de fábrica) não tem NENHUMA rua dentro dela.
+  Foi por isso que 21,8% das fotos ficaram sem rua no primeiro resultado.
+
+  SEXTO (a solução): mudamos a pergunta.
+  Em vez de "que rua passa dentro desta foto?", perguntamos
+  "a que QUADRA esta foto pertence, e quais ruas cercam essa quadra?".
+  Com isso recuperamos 32.544 das 39.220 fotos que estavam sem rua.
+
+
+==============================================================================
+6. O QUE TEM NA PLANILHA FINAL (tiles_rotulos_quadra.csv)
+==============================================================================
+
+Abre no Excel direto (está em UTF-8 e o separador é ponto-e-vírgula ";").
+
+  z, x, y ................. o endereço da foto (zoom, coluna, linha)
+  arquivo ................. caminho completo do .jpg
+  lat_centro, lon_centro .. coordenada do centro da foto
+  rua_principal ........... a rua que domina a foto
+  rua_abrev ............... o nome abreviado ("R. XV DE NOVEMBRO")
+  cobertura_m ............. quantos metros dessa rua estão dentro da foto
+  n_ruas .................. quantas ruas aparecem (2 ou mais = esquina)
+  ruas .................... todas elas, com os metros de cada uma
+  bairro, regional ........ onde fica
+  cep ..................... CEP daquele trecho da rua
+  hierarquia_viaria ....... 1 = via grande ... 4 = rua local
+  origem .................. COMO descobrimos a rua (ver abaixo)
+  quadra .................. código da quadra fiscal
+  rua_quadra .............. rua que cerca a quadra, mais perto desta foto
+  dist_rua_quadra_m ....... distância até essa rua
+  n_ruas_quadra ........... quantas ruas cercam a quadra
+  ruas_quadra ............. quais são
+  endereco ................ ** O CAMPO PRÁTICO: o melhor nome disponível **
+  endereco_origem ......... de onde veio o campo acima
+
+O campo "origem" pode ser:
+  interseccao ..... a rua passa dentro da foto (o caso mais confiável)
+  vizinho_NNm ..... não passa dentro, mas há uma rua a NN metros do centro
+  sem_rua ......... não há rua dentro nem a até 60 metros
+
+O campo "endereco_origem" pode ser:
+  eixo ............ veio da rua que passa dentro (melhor qualidade)
+  vizinho ......... veio da rua próxima
+  quadra .......... veio das ruas que cercam a quadra (menos preciso)
+  indefinido ...... não foi possível determinar
+
+
+==============================================================================
+7. OS NÚMEROS DO RESULTADO
+==============================================================================
+
+  Total de fotos ........................ 180.319
+
+  Depois do estágio 2 (só pelas ruas):
+      rua passa dentro da foto ........... 81.494  (45,2%)
+      rua próxima (até 60 m) ............. 59.605  (33,1%)
+      sem rua ............................ 39.220  (21,8%)
+
+  Depois do estágio 3 (com as quadras):
+      fotos dentro de uma quadra ........ 135.454  (75,1%)
+      recuperadas pela quadra ............ 32.544
+      ainda sem endereço .................. 6.676   (3,7%)
+
+  CONFERIMOS SE ESTÁ CERTO:
+  Sorteamos fotos e perguntamos ao servidor do IPPUC, por outro caminho,
+  qual era a rua e a quadra ali. Bateu 10 de 10 nas ruas e 11 de 11 nas
+  quadras.
+
+
+==============================================================================
+8. CUIDADOS IMPORTANTES (leia antes de usar os dados)
+==============================================================================
+
+  (a) 797 FOTOS ESTÃO EM BRANCO (0,4%)
+      São bordas do voo do avião, fora da área fotografada. Aparecem como
+      imagem branca pura. Dá para identificar sem abrir a imagem: o arquivo
+      tem menos de 2 KB. Vale jogar fora antes de treinar qualquer modelo.
+
+  (b) RUA VISÍVEL NA FOTO QUE NÃO ESTÁ NO MAPA
+      Existem fotos onde se vê asfalto, faixa de pedestre e até seta
+      pintada no chão, mas a planilha diz "sem_rua". Não é erro: são vias
+      INTERNAS de terreno privado (pátio de fábrica, condomínio, área de
+      carga). Elas não são rua pública, então não existem no cadastro do
+      IPPUC. Nesses casos use o campo "quadra".
+
+  (c) DISTÂNCIA GRANDE EM LOTE INDUSTRIAL
+      Em quadras enormes, o "dist_rua_quadra_m" pode passar de 150 metros.
+      A informação continua correta (a foto É daquela quadra), mas se o seu
+      uso exigir que a rua esteja perto de verdade, filtre por essa coluna.
+
+  (d) CEP NÃO É UM POR RUA
+      O CEP vem por TRECHO de rua, não por rua inteira. 5,2% das ruas têm
+      mais de um CEP (a Rodovia Contorno Norte tem 14). Então não existe
+      "o CEP da rua X" para essas.
+      O lado bom: o CEP da planilha é o daquele PEDAÇO da rua, que é mais
+      preciso do que a rua inteira - é um recorte mais parecido com
+      "quarteirão", que é justamente o tema do TCC.
+
+
+==============================================================================
+9. PRÓXIMO PASSO: EXTRAIR FEATURES DAS IMAGENS
+==============================================================================
+
+O plano é juntar 4 fotos numa maior, rodar um modelo em cima e detectar
+coisas (ponto de ônibus, etc). Três avisos que economizam trabalho:
+
+  (a) JUNTAR 4 FOTOS É DE GRAÇA - É O TILE DE ZOOM 19
+      Não precisa inventar como agrupar. O bloco de 2x2 fotos do zoom 20 é
+      EXATAMENTE a mesma área de 1 foto do zoom 19. A conta é:
+            foto_pai = (x dividido por 2, y dividido por 2)  [divisão inteira]
+      A imagem junta fica com 512x512 pixels e cobre 69 x 69 metros.
+      Isso foi conferido numericamente: os cantos batem casa decimal a casa
+      decimal.
+
+  (b) NÃO CARIMBE A FEATURE COM A RUA DA FOTO  <<< O MAIS IMPORTANTE
+      Se você detectar um ponto de ônibus e der a ele a rua da foto, vai
+      errar justamente nos casos difíceis: na esquina (aparecem 3 ruas) e
+      no miolo de quadra (a rua pode estar a 178 metros).
+      Faça assim: o modelo devolve a posição do ponto EM PIXEL. Converta
+      esse pixel para latitude/longitude (a mesma conta do item 5, ao
+      contrário) e só então pergunte qual a rua mais próxima DAQUELE PONTO.
+      Erro de metros em vez de dezenas de metros, e a esquina se resolve
+      sozinha. As funções prontas estão em rotular_tiles.py:
+      tile2deg() e dist_ponto_segmento().
+
+  (c) CUIDADO COM CONTAR DUAS VEZES
+      Se as imagens tiverem qualquer sobreposição, o mesmo abrigo de ônibus
+      aparece em duas delas. Tendo a coordenada, é fácil resolver: dois
+      pontos a menos de 5 metros um do outro são o mesmo ponto.
+
+  PARA COMPARAR RUAS ENTRE SI:
+      "Rua X tem 6 pontos de ônibus" só faz sentido junto do comprimento
+      dela. Temos os 4.567 km de malha calculados a partir do geojson, então
+      dá para usar "pontos por quilômetro" - que compara de igual para igual
+      uma avenida de 28 km com uma rua de 200 metros. A coluna
+      "hierarquia_viaria" ajuda a comparar via grande com via grande.
+
+
+==============================================================================
+10. ACHADO IMPORTANTE: JÁ EXISTE A LISTA OFICIAL DE PONTOS DE ÔNIBUS
+==============================================================================
+
+A URBS publica no mesmo servidor:
+
+    GeoCuritiba/URBS_Transporte_Publico/MapServer/1   ("Parada de ônibus")
+
+São 7.252 pontos de ônibus, cada um com coordenada e TIPO:
+
+    Chapéu chinês .......... 2.364      Estação tubo ............. 289
+    Novo mobiliário ........ 1.931      Placa em poste ........... 234
+    Domus .................... 735      Especial Madrugueiro ..... 185
+    Sem demarcação ........... 600      Linha Turismo ............. 25
+    Placa em cano ............ 487      outros .................... 45
+    Plataforma ............... 339
+
+Por que isso é valioso: é GABARITO PRONTO. Como sabemos converter
+coordenada em foto+pixel, dá para gerar automaticamente o material de
+treino já marcado, e depois MEDIR de verdade o quanto o modelo acerta -
+em vez de conferir no olho por amostragem.
+
+Na mesma camada tem ainda:
+    MapServer/0 = Terminais
+    MapServer/2 = Linhas de ônibus (o trajeto)
+
+AINDA NÃO BAIXAMOS. Quando quiser, é o mesmo esquema dos outros downloads.
+
+
+==============================================================================
+11. OS PROGRAMAS EM D:\TCC
+==============================================================================
+
+  baixar_ortofotos_ippuc.py .... baixa as fotos aéreas
+  rodar_regionais.ps1 .......... roda o de cima para todas as regionais
+  verificar_integridade.py ..... confere se as fotos baixadas estão boas
+  baixar_eixos_logradouro.py ... baixa ruas (padrão) ou quadras (--camada 17)
+  rotular_tiles.py ............. descobre a rua de cada foto
+  rotular_quadras.py ........... completa com a quadra e o campo "endereco"
+  README_ortofotos.md .......... documentação técnica mais detalhada
+  COMO_FUNCIONA.txt ............ este arquivo
+
+  Todos aceitam --help para ver as opções.
+
+
+==============================================================================
+12. NOTA DE USO
+==============================================================================
+
+Os dados do IPPUC são públicos e declarados de caráter informativo, sem
+licença aberta explícita e sem termo proibindo a coleta. Para uso acadêmico
+(TCC) está tranquilo. Para virar produto, peça autorização em
+geoprocessamento@ippuc.org.br.
+
+Os programas se identificam como uso acadêmico no User-Agent e tratam o
+servidor com cuidado: poucas conexões ao mesmo tempo, espera crescente em
+caso de erro e nada de insistir em arquivo que não existe.
+
+==============================================================================

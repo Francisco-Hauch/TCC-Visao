@@ -1,0 +1,14 @@
+# Ambiente para treino/export do YOLO26-OBB (D:\CityVision\Modelo).
+# Instalado no Python global da máquina (sem venv dedicada) em 2026-09-27,
+# porque torch+CUDA e ultralytics já estavam instalados e funcionando
+# globalmente com a RTX 5060 Ti (torch 2.14.0+cu130, CUDA 13 do driver).
+# Reinstalar com: python -m pip install -r requirements.txt
+#
+# torch já presente (2.14.0+cu130) — não relistado aqui para não disparar
+# reinstalação/downgrade acidental. Se for montar isto numa máquina nova,
+# instalar torch com a build CUDA correta primeiro (ver pytorch.org).
+
+ultralytics==8.4.150
+onnx==1.23.0
+onnxslim==0.1.96
+onnxruntime-gpu==1.30.0

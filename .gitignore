@@ -1,0 +1,15 @@
+# Dados pesados — ficam só nesta máquina (GitHub recusa arquivo > 100 MB)
+TCC-data/
+
+# Pesos e saídas de treino — best.pt (126 MB) vai como anexo de Release
+*.pt
+*.onnx
+Modelo/runs/**/weights/
+Modelo/runs/**/deteccoes_lote*.csv
+
+# Python / sistema
+__pycache__/
+*.pyc
+.claude/
+Thumbs.db
+desktop.ini

@@ -1,0 +1,12 @@
+# Gerado pelo Rotulador YOLO em 2026-09-27.
+# path: adicionado em 2026-09-27 ao mover o dataset para D:\CityVision\Modelo\dataset
+# (Estagio "Modelo" — preparacao de ambiente para treino YOLO26-OBB).
+path: D:/CityVision/Modelo/dataset
+train: images/train
+val: images/val
+
+nc: 3
+names:
+  0: area_NãoEdificada
+  1: ponto_onibus
+  2: faixa_pedestre
