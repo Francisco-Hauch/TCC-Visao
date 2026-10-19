@@ -9,7 +9,18 @@ Seleção: estratificada por classe a partir de deteccoes_lote.csv (já
 rodado em toda a Patches512), tentando cobrir uma faixa de confiança
 ampla por classe (não só os mais confiantes), não só os "slam dunks".
 
+Exclui patches que já estão no dataset de treino/val (dataset/images/*),
+pra não revisar de novo o que já foi rotulado. 2026-10-18: a exclusão é
+pelo número do patch (x,y), não pelo nome, e cobre também os vizinhos num
+raio de --raio-exclusao patches (padrão 2, ~140 m) — na revisão de 400
+anterior, 29 patches encostavam num patch do dataset (mesma mata/rua
+continuando de uma imagem para a outra), o que contamina a revisão como
+teste independente. Guarda uma cópia das
+predições originais em <dest>/predicoes_modelo/ (o rotulador sobrescreve
+os .txt ao lado das imagens), pra comparar modelo x correção depois.
+
 Uso:  python preparar_revisao.py [--n 200] [--conf 0.25]
+      python preparar_revisao.py --n 400 --dest ../revisao_400_xl   # 2026-10-13, v4 XL (refeita 2026-10-18 com raio de exclusão 2)
 """
 import argparse
 import csv
@@ -21,20 +32,42 @@ from pathlib import Path
 from ultralytics import YOLO
 
 RAIZ = Path(__file__).resolve().parent.parent
-PT = RAIZ / "runs" / "yolo26_obb_baldio_onibus_faixa" / "weights" / "best.pt"
-DETECCOES_CSV = RAIZ / "runs" / "yolo26_obb_baldio_onibus_faixa" / "deteccoes_lote.csv"
+# 2026-10-13: aponta para o v4 XL. revisao_200 (2026-10-04) foi feita com o v1
+# nano (runs/yolo26_obb_baldio_onibus_faixa, hoje fora do repositório).
+RUN = RAIZ / "runs" / "yolo26x_obb_v4_xl"
+PT = RUN / "weights" / "best.pt"
+DETECCOES_CSV = RUN / "deteccoes_lote.csv"
+DATASET_IMGS = RAIZ / "dataset" / "images"
 CLASSES_TXT = RAIZ / "dataset" / "classes.txt"
 DEST_PADRAO = RAIZ / "revisao_200"
 
 random.seed(0)
 
 
-def selecionar_imagens(n_total: int, conf_min: float):
+def ja_rotuladas(raio: int) -> set:
+    """(x, y) dos patches de train/val e de todos os vizinhos até `raio`
+    patches de distância (Chebyshev), independente da regional no nome."""
+    excluir = set()
+    for p in DATASET_IMGS.rglob("*.jpg"):
+        x, y = (int(v) for v in p.stem.rsplit("_", 2)[1:])
+        for dx in range(-raio, raio + 1):
+            for dy in range(-raio, raio + 1):
+                excluir.add((x + dx, y + dy))
+    return excluir
+
+
+def xy_patch(caminho: str) -> tuple:
+    """'.../<regional>/19/<x>/<y>.jpg' -> (x, y)."""
+    p = Path(caminho)
+    return int(p.parent.name), int(p.stem)
+
+
+def selecionar_imagens(n_total: int, conf_min: float, excluir: set):
     """Agrupa por imagem, pega a melhor confiança por classe, e sorteia
     uma faixa espalhada (não só os mais confiantes) por classe."""
     por_classe = defaultdict(list)  # classe_id -> [(conf, caminho)]
     vistos_por_imagem = defaultdict(dict)  # caminho -> {classe_id: conf_max}
-    with open(DETECCOES_CSV, encoding="utf-8") as f:
+    with open(DETECCOES_CSV, encoding="utf-8-sig") as f:
         r = csv.DictReader(f, delimiter=";")
         for row in r:
             conf = float(row["confianca"])
@@ -42,6 +75,8 @@ def selecionar_imagens(n_total: int, conf_min: float):
                 continue
             cls = int(row["classe_id"])
             caminho = row["arquivo"]
+            if xy_patch(caminho) in excluir:
+                continue
             atual = vistos_por_imagem[caminho].get(cls, 0.0)
             if conf > atual:
                 vistos_por_imagem[caminho][cls] = conf
@@ -92,21 +127,26 @@ def main():
     ap.add_argument("--n", type=int, default=200)
     ap.add_argument("--conf", type=float, default=0.25)
     ap.add_argument("--dest", default=str(DEST_PADRAO))
+    ap.add_argument("--raio-exclusao", type=int, default=2)
     args = ap.parse_args()
 
     dest = Path(args.dest)
     dest.mkdir(parents=True, exist_ok=True)
 
     print("Selecionando imagens (estratificado por classe/confiança)...")
-    caminhos = selecionar_imagens(args.n, args.conf)
+    excluir = ja_rotuladas(args.raio_exclusao)
+    print(f"  {len(excluir)} posições (x,y) excluídas: dataset de treino/val + raio de {args.raio_exclusao} patches")
+    caminhos = selecionar_imagens(args.n, args.conf, excluir)
     print(f"  {len(caminhos)} imagens selecionadas")
 
     shutil.copy(CLASSES_TXT, dest / "classes.txt")
+    orig = dest / "predicoes_modelo"
+    orig.mkdir(exist_ok=True)
 
     modelo = YOLO(str(PT))
     n_ok = n_vazio = 0
-    for i in range(0, len(caminhos), 16):
-        lote = caminhos[i : i + 16]
+    for i in range(0, len(caminhos), 8):  # XL: batch 8
+        lote = caminhos[i : i + 8]
         resultados = modelo.predict(lote, imgsz=1024, conf=args.conf, verbose=False)
         for caminho, r in zip(lote, resultados):
             nome = nome_flat(caminho)
@@ -120,10 +160,10 @@ def main():
                 n_ok += 1
             else:
                 n_vazio += 1
-            (dest / (Path(nome).stem + ".txt")).write_text(
-                "\n".join(linhas) + ("\n" if linhas else ""), encoding="utf-8"
-            )
-        print(f"  {min(i + 16, len(caminhos))}/{len(caminhos)}")
+            texto = "\n".join(linhas) + ("\n" if linhas else "")
+            (dest / (Path(nome).stem + ".txt")).write_text(texto, encoding="utf-8")
+            (orig / (Path(nome).stem + ".txt")).write_text(texto, encoding="utf-8")
+        print(f"  {min(i + 8, len(caminhos))}/{len(caminhos)}")
 
     print(f"Concluído: {n_ok} imagens com caixa, {n_vazio} sem detecção na re-inferência (raro, confiança no limite)")
     print(f"Pasta pronta em: {dest}")

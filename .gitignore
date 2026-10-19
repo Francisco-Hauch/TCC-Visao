@@ -26,3 +26,7 @@ desktop.ini
 # Pastas que começam com ponto (.claude, .venv-analise, ...)
 .*/
 !.git/
+
+# Revisões e rótulos avulsos — o único dataset no repositório é Modelo/dataset/
+Modelo/revisao_*/
+rotulos_yolo.zip
