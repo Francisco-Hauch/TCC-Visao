@@ -1,5 +1,7 @@
 # Dados pesados — ficam só nesta máquina (GitHub recusa arquivo > 100 MB)
-TCC-data/
+TCC-data/*
+# exceção: tabela final rua × características × Sigesguarda (uma por período)
+!TCC-data/ruas_caracteristicas_ocorrencias_*.csv
 
 # Pesos e saídas de treino — best.pt (126 MB) vai como anexo de Release
 *.pt
