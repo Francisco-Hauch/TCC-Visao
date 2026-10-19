@@ -13,3 +13,16 @@ __pycache__/
 .claude/
 Thumbs.db
 desktop.ini
+
+# ambiente da análise estatística (statsmodels/pandas)
+.venv-analise/
+
+# Notas em Markdown ficam fora do repositório, exceto os README
+*.md
+*.MD
+!README*.md
+!README*.MD
+
+# Pastas que começam com ponto (.claude, .venv-analise, ...)
+.*/
+!.git/
