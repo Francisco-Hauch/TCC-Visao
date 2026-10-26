@@ -168,16 +168,7 @@ arquivo < 2 KB): borda do voo / fora da cobertura da ortofoto. Todos caem em
 qualquer coisa — o filtro por tamanho de arquivo < 2 KB os isola sem precisar
 abrir a imagem.
 
-## Próximo (Estágio 4, quando a base estiver no disco)
-
-Gerar os **recortes 1024×1024 por quadra** a partir dos polígonos de quadra
-(shapefile `ARRUAMENTO_QUADRAS_SIRGAS.zip` ou a API `Publico_GeoCuritiba_MapaCadastral`
-para ter o identificador de cada quadra). Esse é o próximo script.
-
 ## Nota de uso
 
 O IPPUC declara caráter "meramente informativo" dos arquivos, sem licença aberta
-explícita nem termo proibindo coleta. Para uso acadêmico (TCC) está tranquilo; para
-produto, peça autorização a `geoprocessamento@ippuc.org.br`. O script já manda um
-`User-Agent` identificando uso acadêmico e respeita o serviço (8 threads, retry com
-backoff, sem martelar tile ausente).
+explícita nem termo proibindo coleta para uso comercial.
