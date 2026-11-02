@@ -1,0 +1,81 @@
+$ python Modelo/scripts/todas_naturezas_r4.py
+5712 ruas; 64 naturezas testadas
+  dano                                   A 1.009 p=0.6825 | B 0.970 p=0.0122
+  invasao                                A 1.031 p=0.1114 | B 0.995 p=0.8096
+  roubo                                  A 1.106 p=0.0001 | B 1.109 p=0.0038
+  furto                                  A 1.064 p=0.0037 | B 1.013 p=0.3068
+  transito                               A 1.006 p=0.7514 | B 0.996 p=0.7460
+  substancia_ilicita                     A 1.122 p=0.0006 | B 1.066 p=0.0247
+  perturbacao_sossego                    A 0.980 p=0.4176 | B 0.936 p=0.0155
+  queima_a_ceu_aberto                    A 1.094 p=0.0000 | B 1.067 p=0.0011
+  veiculo                                A 1.114 p=0.0000 | B 1.095 p=0.0000
+  deposito_irregular                     A 1.150 p=0.0000 | B 1.115 p=0.0068
+  crime_ambiental                        A 1.188 p=0.0001 | B 1.160 p=0.0006
+  apoio                                  A 1.006 p=0.6682 | B 0.982 p=0.0795
+  fundada_suspeita_abordagem             A 1.103 p=0.0000 | B 1.046 p=0.0268
+  orientacao                             A 0.996 p=0.8260 | B 0.949 p=0.0015
+  animais                                A 0.992 p=0.4843 | B 0.951 p=0.0000
+  atitude_suspeita                       A 1.080 p=0.0000 | B 1.049 p=0.0005
+  alarmes                                A nan p=nan | B 1.001 p=0.9762
+  ameaca                                 A 1.003 p=0.8848 | B 0.979 p=0.0246
+  agressao_fisica_verbal                 A 1.014 p=0.4205 | B 0.993 p=0.5947
+  vias_fato                              A 1.010 p=0.7593 | B 0.978 p=0.2419
+  desinteligencia                        A nan p=nan | B 1.014 p=0.4727
+  violacao_medida_protetiva_lei_maria_p  A 0.949 p=0.0018 | B 0.902 p=0.0000
+  tentativa                              A 1.074 p=0.0012 | B 1.061 p=0.0001
+  alagamento                             A 0.963 p=0.0409 | B 0.918 p=0.0008
+  risco_acidente_a_vida                  A 0.922 p=0.0225 | B 0.897 p=0.0127
+  vistoria                               A 1.035 p=0.2317 | B 1.003 p=0.9243
+  encaminhamento                         A 1.041 p=0.2080 | B 1.018 p=0.5171
+  paciente_usuario_alterado              A 1.049 p=0.5125 | B 0.994 p=0.8468
+  fornecimento_lona                      A 1.008 p=0.7130 | B 1.011 p=0.7223
+  atos_obscenos_libidinosos              A 1.133 p=0.0002 | B 1.111 p=0.0001
+  ronda                                  A 1.018 p=0.4861 | B 1.022 p=0.2779
+  destelhamento                          A 0.958 p=0.1779 | B 0.944 p=0.0554
+  desacato                               A 1.058 p=0.1956 | B 1.053 p=0.0609
+  disparo_arma                           A 1.074 p=0.0042 | B 1.048 p=0.1084
+  averiguacao                            A 1.045 p=0.1525 | B 1.018 p=0.5017
+  lesao_corporal                         A 1.175 p=0.0003 | B 1.065 p=0.1509
+  queda_arvore                           A 1.009 p=0.8156 | B 0.988 p=0.7809
+  achado                                 A 1.174 p=0.0006 | B 1.148 p=0.0000
+  aifu                                   A 0.910 p=0.0229 | B 0.877 p=0.0005
+  porte_ilegal                           A nan p=nan | B 0.996 p=0.8685
+  uso_indevido_cartao_transporte         A nan p=nan | B 1.039 p=0.4877
+  banho_em_local_improprio               A 1.542 p=0.0000 | B 1.321 p=0.0000
+  conduta_inconveniente                  A 0.972 p=0.5179 | B 0.937 p=0.0795
+  risco_desabamento_desmoronamento       A 1.019 p=0.5675 | B 1.000 p=0.9968
+  importunacao_sexual                    A 1.166 p=0.0146 | B 1.092 p=0.0205
+  incendio                               A 1.090 p=0.0199 | B 1.054 p=0.0813
+  desabamento                            A nan p=nan | B 1.028 p=0.4102
+  crianca_perdida_desaparecida           A 0.934 p=0.2507 | B 0.938 p=0.2925
+  manifestacao                           A nan p=nan | B 0.980 p=0.6752
+  substancia_licita                      A 1.143 p=0.0086 | B 1.068 p=0.0586
+  escolta                                A 0.968 p=0.4684 | B 1.006 p=0.9121
+  desaparecimento                        A 1.088 p=0.0438 | B 1.040 p=0.2488
+  erosao                                 A 0.950 p=0.2281 | B 0.907 p=0.0546
+  situacao_risco                         A 1.029 p=0.5965 | B 0.982 p=0.6470
+  desobediencia                          A 1.054 p=0.3303 | B 1.019 p=0.6020
+  arrastao                               A 1.090 p=0.0817 | B 1.113 p=0.0488
+  embriaguez                             A 1.057 p=0.3199 | B 1.027 p=0.5829
+  poluicao_visual_ambiental              A 1.106 p=0.0061 | B 1.098 p=0.0423
+  corte_irregular_arvore                 A 1.151 p=0.0001 | B 1.143 p=0.0015
+  vazamento_ou_derramamento_produto_per  A 1.083 p=0.0816 | B 1.084 p=0.2846
+  avaria_em_equipamento_patrimonio_nao_  A 1.057 p=0.2763 | B 1.024 p=0.6084
+  obstrucao_via                          A 0.996 p=0.9192 | B 0.990 p=0.8208
+  abandono_incapaz                       A 1.048 p=0.4968 | B 1.005 p=0.9347
+  obito                                  A 1.082 p=0.2942 | B 1.104 p=0.2083
+-> D:/CityVision/TCC-data/resultado_r4_todas_naturezas.csv
+
+resumo por grupo (B, FDR q<0,05):
+  G1 abandono físico/ambiental       n= 7  +  4  -  0  nulo  3
+  G2 vegetação e água                n= 5  +  1  -  2  nulo  2
+  G3 crime e desordem de rua         n=16  +  5  -  1  nulo 10
+  G4 interpessoal/doméstico          n=12  +  0  -  1  nulo 11
+  G5 operacional/controle negativo   n=24  +  1  -  3  nulo 20
+
+G5 positivos significativos: 4% (limite 10%)
+-> D:/CityVision/TCC-data/figuras_r4/todas_naturezas.png
+
+real	0m43.615s
+user	0m42.836s
+sys	0m0.342s

@@ -1,0 +1,9 @@
+$ python Modelo/scripts/inferir_lote.py --pasta D:/CityVision/TCC-data/Patches512   (76 patches de val)
+76 imagens em D:/CityVision/TCC-data/Patches512
+  4/76 imagens, 7 detecções, 21s
+Concluído: 76 imagens, 162 detecções em 369s (4856.5 ms/img)
+CSV salvo em: /tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/work/D:/CityVision/Modelo/runs/yolo26x_obb_v4_xl/deteccoes_lote.csv
+
+real	6m11.868s
+user	5m15.860s
+sys	0m32.143s

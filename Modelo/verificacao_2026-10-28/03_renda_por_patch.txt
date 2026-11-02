@@ -1,0 +1,3 @@
+$ python Modelo/scripts/renda_por_patch.py
+45523 patches: 43901 dentro de setor (96.4%), 42580 com renda
+-> D:/CityVision/TCC-data/patches512_renda.csv

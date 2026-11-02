@@ -1,0 +1,21 @@
+$ python Modelo/scripts/onibus_area_r5.py
+5712 ruas, 64 bairros, 2009-2020
+patches por tipo: nenhum 29650, so_area 29578, so_onibus 3153, os_dois 2359; ruas com >=1 'os dois': 1437
+
+=== Roubo ===  12602 ocorrências em 5712 ruas
+  A volume       vs nenhum: so_area 1.11 (p=0.000); so_onibus 1.27 (p=0.000); os_dois 1.41 (p=0.000)
+                 INTERAÇÃO 1.006 (0.854-1.185) p=0.9462
+  B composição   vs nenhum: so_area 1.13 (p=0.004); so_onibus 1.05 (p=0.257); os_dois 1.08 (p=0.454)
+                 INTERAÇÃO 0.920 (0.753-1.124) p=0.4150
+
+=== Trânsito (controle negativo) ===  11982 ocorrências em 5712 ruas
+  A volume       vs nenhum: so_area 0.99 (p=0.771); so_onibus 1.07 (p=0.026); os_dois 1.25 (p=0.001)
+                 INTERAÇÃO 1.173 (1.009-1.364) p=0.0377  <- p<0,05
+  B composição   vs nenhum: so_area 0.98 (p=0.266); so_onibus 0.89 (p=0.108); os_dois 0.99 (p=0.897)
+                 INTERAÇÃO 1.132 (0.955-1.343) p=0.1537
+
+-> D:/CityVision/TCC-data/resultado_r5_onibus_area.csv
+
+real	0m2.908s
+user	0m2.727s
+sys	0m0.145s

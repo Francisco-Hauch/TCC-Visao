@@ -1,0 +1,9 @@
+$ python Modelo/scripts/comparar_inferencia.py (76 patches de val, CPU) x deteccoes_lote.csv original (GPU)
+patches na inferência nova com ≥1 detecção: 66
+detecções — original nesses patches: 162   nova: 162
+casadas (centro ≤ 3.0 px): 162
+só no original: 0 (confianças: [])
+só na nova:     0 (confianças: [])
+|Δ confiança| nas casadas: mediana 0.0000, máx 0.0011
+|Δ largura| (px) nas casadas: mediana 0.00, máx 0.10
+conferência: detecções do original nos 76 patches de val = 162 em 66 patches (nova: 162 em 66)

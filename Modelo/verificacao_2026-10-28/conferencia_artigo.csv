@@ -1,0 +1,195 @@
+﻿secao;item;artigo;saida_script;status;obs
+Dataset;imagens rotuladas (total);348;348;OK;
+Dataset;imagens de treino;272;272;OK;
+Dataset;imagens de validação;76;76;OK;
+Treino (results.csv);época do best.pt;82;83;DIFERE;
+Treino (results.csv);mAP50 (val) na melhor época;0.736;0.735;DIFERE;
+Treino (results.csv);mAP50-95 (val) na melhor época;0.482;0.483;DIFERE;"não está no artigo; CLAUDE.md"
+Treino (results.csv);precisão (val) na melhor época;0.78;0.79;DIFERE;
+Treino (results.csv);recall (val) na melhor época;0.73;0.69;DIFERE;
+Treino (revalidação);mAP50 por classe;área 0.67 (menor);—;NÃO VERIFICÁVEL;ver saída 18 (validar_modelo.py): área 0.666, ônibus 0.657, faixa 0.883
+Detector;patches (tiles 512) na cidade;45,523;45,523;OK;
+Detector;% de patches com área não edificada;54.7;54.7;OK;
+Detector;regional com MENOR % de área (nome);Matriz;Portao;DIFERE;37.0%
+Detector;% de área na Matriz;38;38;OK;
+Detector;menor % entre regionais;38;37;DIFERE;
+Detector;regional com MAIOR % (nome);Santa Felicidade;Santa Felicidade;OK;
+Detector;maior % entre regionais;81;81;OK;
+Integração;segmentos de eixo de logradouro;42,236;42,236;OK;
+Dados;registros 2009–2020 (sistema antigo);323,007;323,007;OK;
+Dados;registros casados com rua coberta;234,600;234,600;OK;
+Dados;% casados;73;73;OK;
+Dados;% rua sem ortofoto;14;14;OK;
+Dados;% nome fora do cadastro;7.6;7.6;OK;
+Dados;% rua vista em outro bairro;5.8;5.8;OK;
+Dados;unidades (rua, bairro) modeladas;5,712;5,712;OK;
+Dados;bairros;64;64;OK;
+Dados;km de rua nas unidades;2,600;2,600;OK;artigo arredonda para centena
+Dados;ocorrências nas unidades modeladas;224,180;224,180;OK;
+Dados;ocorrências fora (ruas <3 tiles, sem renda/hierarquia);10,420;10,420;OK;
+Dados;% dos registros nos 5% de unidades com mais;65;65;OK;
+Dados;% de unidades sem queima;80;80;OK;
+Dados;registros de queima;2,235;2,235;OK;
+Dados;% de unidades sem depósito irregular;97;97;OK;
+Dados;registros de depósito irregular;294;294;OK;
+Tabela I;média anual todas 2009–2020;18,682;18,682;OK;
+Tabela I;média anual todas 2021–2022;38,109;38,109;OK;
+Tabela I;média anual trânsito 2009–2020;998;999;OK;empate exato 998.5 (meio)
+Tabela I;média anual trânsito 2021–2022;6,300;6,300;OK;
+Tabela I;média anual queima 2009–2020;186;186;OK;
+Tabela I;média anual queima 2021–2022;391;391;OK;
+Tabela I;média anual roubo 2009–2020;1,050;1,050;OK;
+Tabela I;média anual roubo 2021–2022;530;531;OK;empate exato 530.5 (meio)
+Tabela I;% trânsito 2009–2020;5.3;5.3;OK;
+Tabela I;% trânsito 2021–2022;16.5;16.5;OK;
+Tabela II;CORONEL JOAO MARIA SOB: tiles;12;12;OK;
+Tabela II;CORONEL JOAO MARIA SOB: tiles com área;12;12;OK;
+Tabela II;CORONEL JOAO MARIA SOB: ônibus/faixas;0/0;0/0;OK;
+Tabela II;CORONEL JOAO MARIA SOB: renda média;6,327;6,327;OK;
+Tabela II;CORONEL JOAO MARIA SOB: ocorrências;28;28;OK;
+Tabela II;CORONEL JOAO MARIA SOB: queima;2;2;OK;
+Tabela II;CORONEL JOAO MARIA SOB: invasão;0;0;OK;
+Tabela II;BRASILIO PERY MOREIRA: tiles;11;11;OK;
+Tabela II;BRASILIO PERY MOREIRA: tiles com área;8;8;OK;
+Tabela II;BRASILIO PERY MOREIRA: ônibus/faixas;1/3;1/3;OK;
+Tabela II;BRASILIO PERY MOREIRA: renda média;3,868;3,868;OK;
+Tabela II;BRASILIO PERY MOREIRA: ocorrências;52;52;OK;
+Tabela II;BRASILIO PERY MOREIRA: queima;2;2;OK;
+Tabela II;BRASILIO PERY MOREIRA: invasão;8;8;OK;
+Tabela II;PASTEUR: tiles;8;8;OK;
+Tabela II;PASTEUR: tiles com área;0;0;OK;
+Tabela II;PASTEUR: ônibus/faixas;0/3;0/3;OK;
+Tabela II;PASTEUR: renda média;14,553;14,553;OK;
+Tabela II;PASTEUR: ocorrências;12;12;OK;
+Tabela II;PASTEUR: queima;0;0;OK;
+Tabela II;PASTEUR: invasão;0;0;OK;
+Figura 3;ocorrências/km (2009–2020) grupo 0-20%;98;98;OK;
+Figura 3;ocorrências/km (2009–2020) grupo 20-40%;105;105;OK;
+Figura 3;ocorrências/km (2009–2020) grupo 40-60%;90;90;OK;
+Figura 3;ocorrências/km (2009–2020) grupo 60-80%;58;58;OK;
+Figura 3;ocorrências/km (2009–2020) grupo 80-100%;57;57;OK;
+Figura 3;% queima no grupo 0–20%;0.7;0.7;OK;
+Figura 3;% queima no grupo 80–100%;1.5;1.5;OK;
+Figura 3;% depósito no grupo 0–20%;0.13;0.13;OK;
+Figura 3;% depósito no grupo 80–100%;0.25;0.25;OK;
+Tabela VI;H1 modelo A efeito;1.09;1.09;OK;
+Tabela VI;H1 modelo A IC inf;1.06;1.06;OK;
+Tabela VI;H1 modelo A IC sup;1.13;1.13;OK;
+Tabela VI;H1 modelo B efeito;1.07;1.07;OK;
+Tabela VI;H1 modelo B IC inf;1.03;1.03;OK;
+Tabela VI;H1 modelo B IC sup;1.11;1.11;OK;
+Tabela VI;H2 modelo A efeito;1.15;1.15;OK;
+Tabela VI;H2 modelo A IC inf;1.08;1.08;OK;
+Tabela VI;H2 modelo A IC sup;1.23;1.23;OK;
+Tabela VI;H2 modelo B efeito;1.12;1.12;OK;
+Tabela VI;H2 modelo B IC inf;1.03;1.03;OK;
+Tabela VI;H2 modelo B IC sup;1.21;1.21;OK;
+Tabela VI;H3 modelo A efeito;1.03;1.03;OK;
+Tabela VI;H3 modelo A IC inf;0.99;0.99;OK;
+Tabela VI;H3 modelo A IC sup;1.07;1.07;OK;
+Tabela VI;H3 modelo B efeito;1.00;1.00;OK;
+Tabela VI;H3 modelo B IC inf;0.96;0.96;OK;
+Tabela VI;H3 modelo B IC sup;1.03;1.03;OK;
+Tabela VI;H4 modelo A efeito;1.03;1.03;OK;
+Tabela VI;H4 modelo A IC inf;0.99;0.99;OK;
+Tabela VI;H4 modelo A IC sup;1.06;1.06;OK;
+Tabela VI;H4 modelo B efeito;0.98;0.98;OK;
+Tabela VI;H4 modelo B IC inf;0.96;0.96;OK;
+Tabela VI;H4 modelo B IC sup;1.01;1.01;OK;
+Tabela VI;C modelo A efeito;1.01;1.01;OK;
+Tabela VI;C modelo A IC inf;0.97;0.97;OK;
+Tabela VI;C modelo A IC sup;1.04;1.04;OK;
+Tabela VI;C modelo B efeito;1.00;1.00;OK;
+Tabela VI;C modelo B IC inf;0.97;0.97;OK;
+Tabela VI;C modelo B IC sup;1.02;1.02;OK;
+Tabela VI;H1 p no modelo B;0.001;0.001;OK;
+Tabela VI;H2 p no modelo B;0.007;0.007;OK;
+Sensibilidade 2009–2022;H1 modelo A;1.11;1.11;OK;
+Sensibilidade 2009–2022;H1 modelo B;1.09;1.09;OK;
+Sensibilidade 2009–2022;H2 modelo A;1.17;1.17;OK;
+Sensibilidade 2009–2022;H2 modelo B;1.14;1.14;OK;
+Sensibilidade 2009–2022;trânsito modelo B (efeito);0.97;0.97;OK;artigo: 'leve efeito negativo'
+Tabela VII;H1 Moran: menor p;0.086;0.086;OK;
+Tabela VII;H2 Moran: menor p;0.18;0.18;OK;
+Tabela VII;H1 SLX efeito B;1.06;1.06;OK;
+Tabela VII;H1 SLX p B;0.023;0.023;OK;
+Tabela VII;H2 SLX efeito B;1.15;1.15;OK;
+Tabela VII;H2 SLX p B;0.002;0.002;OK;
+Tabela VII;H1 cluster efeito B;1.07;1.07;OK;
+Tabela VII;H1 cluster p B;0.003;0.003;OK;
+Tabela VII;H2 cluster efeito B;1.12;1.12;OK;
+Tabela VII;H2 cluster p B;0.027;0.027;OK;
+Tabela VII;H1 sem trânsito e perturbação (efeito);1.06;1.06;OK;
+Tabela VII;H1 sem trânsito e perturbação (p);0.004;0.004;OK;
+Tabela VII;H2 sem trânsito e perturbação (efeito);1.11;1.11;OK;
+Tabela VII;H2 sem trânsito e perturbação (p);0.012;0.012;OK;
+Tabela VII;H1 conf ≥0,5 efeito B;1.03;1.03;OK;
+Tabela VII;H1 conf ≥0,5 p B;0.12;0.12;OK;
+Tabela VII;H1 conf ≥0,7 efeito B;1.05;1.05;OK;
+Tabela VII;H1 conf ≥0,7 p B;0.02;0.02;OK;
+Tabela VII;H2 conf ≥0,5 efeito B;1.11;1.11;OK;
+Tabela VII;H2 conf ≥0,5 p B;0.004;0.004;OK;
+Tabela VII;H2 conf ≥0,7 efeito B;1.15;1.15;OK;
+Tabela VII;H2 conf ≥0,7 p B < 0.001;sim;sim;OK;
+Robustez (texto);fração média de área por rua, conf ≥0,25 (%);44;44;OK;
+Robustez (texto);fração média de área por rua, conf ≥0,5 (%);31;30;DIFERE;
+Robustez (texto);fração média de área por rua, conf ≥0,7 (%);19;19;OK;
+Robustez (texto);H1 efeito por DP, conf ≥0,25;1.21;1.21;OK;
+Robustez (texto);H1 efeito por DP, conf ≥0,5;1.08;1.08;OK;
+Robustez (texto);H1 efeito por DP, conf ≥0,7;1.12;1.12;OK;
+Robustez (texto);H2 efeito por DP, conf ≥0,25;1.38;1.38;OK;
+Robustez (texto);H2 efeito por DP, conf ≥0,5;1.33;1.33;OK;
+Robustez (texto);H2 efeito por DP, conf ≥0,7;1.40;1.40;OK;
+Tabela VII;H1 permutação: nenhuma ≥ observado;sim;sim;OK;p_perm = 0.0010 = 1/1001
+Tabela VII;H2 permutação: nenhuma ≥ observado;sim;sim;OK;p_perm = 0.0010 = 1/1001
+Tabela VII;H1 deixa-um-bairro: menor efeito B;1.05;1.05;OK;
+Tabela VII;H1 deixa-um-bairro: maior efeito B;1.08;1.07;DIFERE;
+Tabela VII;H2 deixa-um-bairro: menor efeito B;1.09;1.09;OK;
+Tabela VII;H2 deixa-um-bairro: maior efeito B;1.14;1.14;OK;
+Tabela VII;H2 deixa-um-bairro: maior p (bairro);CIDADE INDUSTRIAL DE CURITIBA;CIDADE INDUSTRIAL DE CURITIBA;OK;revisão do autor
+Tabela VII;H2 deixa-um-bairro: maior p;0.031;0.031;OK;revisão do autor
+Tamanho do efeito;rua local típica (m);273;273;OK;
+Tamanho do efeito;H1 razão 80%/20%;1.7;1.7;OK;
+Tamanho do efeito;H1 IC inf;1.4;1.4;OK;
+Tamanho do efeito;H1 IC sup;2.1;2.1;OK;
+Tamanho do efeito;H2 razão 80%/20%;2.3;2.3;OK;
+Tamanho do efeito;H2 IC inf;1.5;1.5;OK;
+Tamanho do efeito;H2 IC sup;3.3;3.3;OK;
+Tamanho do efeito;queimas a mais por 100 ruas/ano;1;1;OK;artigo: 'cerca de uma'
+Tamanho do efeito;renda da rua local típica (R$);3,990;3,990;OK;
+Robustez (texto);H1 modelo B sem controle de ônibus;1.07;1.07;OK;
+Robustez (texto);H2 modelo B sem controle de ônibus;1.12;1.12;OK;
+Tabela VIII;naturezas testadas;64;64;OK;
+Tabela VIII;G1 n;7;7;OK;
+Tabela VIII;G1 positivos;4;4;OK;
+Tabela VIII;G1 negativos;0;0;OK;
+Tabela VIII;G1 nulos;3;3;OK;
+Tabela VIII;G2 n;5;5;OK;
+Tabela VIII;G2 positivos;1;1;OK;
+Tabela VIII;G2 negativos;2;2;OK;
+Tabela VIII;G2 nulos;2;2;OK;
+Tabela VIII;G3 n;16;16;OK;
+Tabela VIII;G3 positivos;5;5;OK;
+Tabela VIII;G3 negativos;1;1;OK;
+Tabela VIII;G3 nulos;10;10;OK;
+Tabela VIII;G4 n;12;12;OK;
+Tabela VIII;G4 positivos;0;0;OK;
+Tabela VIII;G4 negativos;1;1;OK;
+Tabela VIII;G4 nulos;11;11;OK;
+Tabela VIII;G5 n;24;24;OK;
+Tabela VIII;G5 positivos;1;1;OK;
+Tabela VIII;G5 negativos;3;3;OK;
+Tabela VIII;G5 nulos;20;20;OK;
+Exploratório (texto);crime_ambiental efeito B;1.16;1.16;OK;
+Exploratório (texto);corte_irregular_arvore efeito B;1.14;1.14;OK;
+Exploratório (texto);deposito_irregular efeito B;1.12;1.12;OK;
+Exploratório (texto);queima_a_ceu_aberto efeito B;1.07;1.07;OK;
+Exploratório (texto);roubo: interação ônibus×área (modelo A);1.01;1.01;OK;
+Exploratório (texto);roubo: p da interação (modelo A);0.95;0.95;OK;
+Exploratório (texto);trânsito: interação (modelo A);1.17;1.17;OK;revisão do autor
+Exploratório (texto);trânsito: p da interação (modelo A);0.04;0.04;OK;revisão do autor
+Não verificáveis nesta rodada;tiles z20 baixados;180,319;—;NÃO VERIFICÁVEL;exige a árvore Ortofotos2019 (180 mil arquivos)
+Não verificáveis nesta rodada;quadrantes vazios;1,773 / 182,092;—;NÃO VERIFICÁVEL;"idem; 45.523×4 = 182.092 confere com o nº de patches"
+Não verificáveis nesta rodada;tamanho do download;2.4 GB;—;NÃO VERIFICÁVEL;idem
+Não verificáveis nesta rodada;conexões paralelas;16 (autor: 8);—;NÃO VERIFICÁVEL;"sem log do download; scripts têm padrão 16, README diz 8"
+Não verificáveis nesta rodada;mAP50 do v1 nano;0.718;—;NÃO VERIFICÁVEL;pesos/run do v1 não estão na pasta (só o README)

@@ -1,0 +1,4 @@
+[DIFERE nos bytes] TCC-data/resultado_hipoteses_2009_2020.csv: linhas 60 vs 60, colunas 9 vs 9
+   conteúdo igual (diferença só de formatação/bytes)
+[DIFERE nos bytes] TCC-data/resultado_hipoteses_2009_2022.csv: linhas 60 vs 60, colunas 9 vs 9
+   conteúdo igual (diferença só de formatação/bytes)

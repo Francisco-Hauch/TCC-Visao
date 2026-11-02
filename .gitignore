@@ -32,3 +32,6 @@ desktop.ini
 # Revisões e rótulos avulsos — o único dataset no repositório é Modelo/dataset/
 Modelo/revisao_*/
 rotulos_yolo.zip
+
+# Scripts abandonados ou superados — ficam só nesta máquina
+scripts/fora_da_analise/

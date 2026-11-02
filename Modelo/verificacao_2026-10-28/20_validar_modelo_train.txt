@@ -1,0 +1,19 @@
+$ python Modelo/scripts/validar_modelo.py --split train --device cpu
+Ultralytics 8.4.150 🚀 Python-3.12.3 torch-2.15.0+cu132 CPU (Intel Xeon Processor @ 2.10GHz)
+YOLO26x-obb summary (fused): 197 layers, 57,545,592 parameters, 0 gradients, 202.2 GFLOPs
+val: Fast image access ✅ (ping: 0.0±0.0 ms, read: 2835.9±1179.5 MB/s, size: 70.7 KB)
+val: New cache created: /tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/work/D:/CityVision/Modelo/dataset/labels/train.cache
+                   all        272        523       0.96      0.952       0.97      0.777
+Speed: 4.4ms preprocess, 4732.7ms inference, 0.0ms loss, 2.8ms postprocess per image
+Results saved to /tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/work/D:/CityVision/Modelo/runs/val_train
+
+best.pt em train: 3 classes avaliadas
+classe                    P      R   mAP50  mAP50-95
+todas                 0.960  0.952   0.970     0.777
+area_NãoEdificada     0.898  0.866   0.921     0.582
+ponto_onibus          0.989  0.991   0.995     0.870
+faixa_pedestre        0.992  1.000   0.995     0.878
+
+real	21m45.630s
+user	19m50.307s
+sys	1m36.671s

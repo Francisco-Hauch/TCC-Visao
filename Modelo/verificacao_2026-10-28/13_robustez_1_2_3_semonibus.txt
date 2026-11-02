@@ -1,0 +1,113 @@
+$ python Modelo/scripts/robustez_r3.py --teste 1 2 3 42   (4 = revisão manual, não rodado)
+
+===== teste 1: teste_moran =====
+5712 ruas; 260 células de 1 km
+  H1 Queima a céu aberto   A volume      knn8      n= 5693 I=+0.0078 p=0.122
+  H1 Queima a céu aberto   A volume      banda500m n= 5688 I=+0.0056 p=0.089
+  H1 Queima a céu aberto   B composição  knn8      n= 4933 I=+0.0065 p=0.153
+  H1 Queima a céu aberto   B composição  banda500m n= 4923 I=+0.0063 p=0.086
+    original (cluster bairro)    A 1.094 (1.06-1.13) p=0.0000 | B 1.067 (1.03-1.11) p=0.0011 -> se mantém
+    SLX (área dos 8 vizinhos)    A 1.117 (1.08-1.16) p=0.0000 | B 1.062 (1.01-1.12) p=0.0231 -> enfraquece
+    cluster célula 1 km          A 1.094 (1.06-1.13) p=0.0000 | B 1.067 (1.02-1.11) p=0.0026 -> se mantém
+  H2 Depósito irregular    A volume      knn8      n= 4926 I=+0.0003 p=0.441
+  H2 Depósito irregular    A volume      banda500m n= 4919 I=+0.0038 p=0.179
+  H2 Depósito irregular    B composição  knn8      n= 4276 I=-0.0040 p=0.345
+  H2 Depósito irregular    B composição  banda500m n= 4264 I=-0.0024 p=0.367
+    original (cluster bairro)    A 1.150 (1.08-1.23) p=0.0000 | B 1.115 (1.03-1.21) p=0.0068 -> se mantém
+    SLX (área dos 8 vizinhos)    A 1.223 (1.13-1.32) p=0.0000 | B 1.154 (1.05-1.26) p=0.0022 -> se mantém
+    cluster célula 1 km          A 1.150 (1.08-1.22) p=0.0000 | B 1.115 (1.01-1.23) p=0.0274 -> enfraquece
+  H3 Invasão               A volume      knn8      n= 5675 I=+0.0073 p=0.117
+  H3 Invasão               A volume      banda500m n= 5670 I=-0.0024 p=0.322
+  H3 Invasão               B composição  knn8      n= 4929 I=+0.0325 p=0.001
+  H3 Invasão               B composição  banda500m n= 4919 I=+0.0135 p=0.001
+  H4 Cesta desordem        A volume      knn8      n= 5712 I=+0.0194 p=0.003
+  H4 Cesta desordem        A volume      banda500m n= 5707 I=+0.0094 p=0.017
+  H4 Cesta desordem        B composição  knn8      n= 4949 I=+0.0334 p=0.001
+  H4 Cesta desordem        B composição  banda500m n= 4939 I=+0.0246 p=0.001
+  C  Trânsito (controle ne A volume      knn8      n= 5712 I=+0.0553 p=0.001
+  C  Trânsito (controle ne A volume      banda500m n= 5707 I=+0.0400 p=0.001
+  C  Trânsito (controle ne B composição  knn8      n= 4949 I=+0.0650 p=0.001
+  C  Trânsito (controle ne B composição  banda500m n= 4939 I=+0.0590 p=0.001
+-> D:/CityVision/TCC-data/resultado_r3_moran.csv
+-> D:/CityVision/TCC-data/resultado_r3_moran_reestimado.csv
+
+===== teste 2: teste_composicao =====
+  H1 Queima a céu aberto     B                              1.067 (1.03-1.11) p=0.0011
+  H1 Queima a céu aberto     B1 sem Trânsito                1.067 (1.03-1.11) p=0.0013
+  H1 Queima a céu aberto     B2 sem Trânsito e Perturbação  1.060 (1.02-1.10) p=0.0038
+                             -> se mantém
+  H2 Depósito irregular      B                              1.115 (1.03-1.21) p=0.0068
+  H2 Depósito irregular      B1 sem Trânsito                1.115 (1.03-1.21) p=0.0076
+  H2 Depósito irregular      B2 sem Trânsito e Perturbação  1.108 (1.02-1.20) p=0.0121
+                             -> se mantém
+  H3 Invasão                 B                              0.995 (0.96-1.03) p=0.8096
+  H3 Invasão                 B1 sem Trânsito                0.995 (0.96-1.03) p=0.7835
+  H3 Invasão                 B2 sem Trânsito e Perturbação  0.989 (0.95-1.03) p=0.5647
+                             -> cai
+  H4 Cesta desordem          B                              0.983 (0.96-1.01) p=0.1390
+  H4 Cesta desordem          B1 sem Trânsito                0.983 (0.96-1.00) p=0.1208
+  H4 Cesta desordem          B2 sem Trânsito e Perturbação  0.998 (0.97-1.02) p=0.8353
+                             -> cai
+  Roubo                      B                              1.109 (1.03-1.19) p=0.0038
+  Roubo                      B1 sem Trânsito                1.110 (1.03-1.19) p=0.0038
+  Roubo                      B2 sem Trânsito e Perturbação  1.107 (1.03-1.19) p=0.0052
+                             -> sobrevive
+  Veículo                    B                              1.095 (1.06-1.14) p=0.0000
+  Veículo                    B1 sem Trânsito                1.096 (1.06-1.14) p=0.0000
+  Veículo                    B2 sem Trânsito e Perturbação  1.090 (1.05-1.13) p=0.0000
+                             -> sobrevive
+  Substância ilícita         B                              1.066 (1.01-1.13) p=0.0247
+  Substância ilícita         B1 sem Trânsito                1.067 (1.01-1.13) p=0.0212
+  Substância ilícita         B2 sem Trânsito e Perturbação  1.065 (1.00-1.13) p=0.0337
+                             -> ambíguo
+  Furto                      B                              1.013 (0.99-1.04) p=0.3068
+  Furto                      B1 sem Trânsito                1.013 (0.99-1.04) p=0.3177
+  Furto                      B2 sem Trânsito e Perturbação  1.009 (0.98-1.03) p=0.4788
+                             -> artefato da composição
+-> D:/CityVision/TCC-data/resultado_r3_composicao.csv
+
+===== teste 3: teste_confianca =====
+conf >= 0,25 (atual): fração média da rua com área = 44.4%, DP = 29.7 p.p.
+  H1 Queima a céu aberto     A 1.094 (1.06-1.13) p=0.0000 | B 1.067 (1.03-1.11) p=0.0011
+  H2 Depósito irregular      A 1.150 (1.08-1.23) p=0.0000 | B 1.115 (1.03-1.21) p=0.0068
+  H3 Invasão                 A 1.031 (0.99-1.07) p=0.1114 | B 0.995 (0.96-1.03) p=0.8096
+  H4 Cesta desordem          A 1.026 (0.99-1.06) p=0.1576 | B 0.983 (0.96-1.01) p=0.1390
+  C  Trânsito (controle nega A 1.006 (0.97-1.04) p=0.7514 | B 0.996 (0.97-1.02) p=0.7460
+conf >= 0,5: fração média da rua com área = 30.5%, DP = 28.0 p.p.
+  H1 Queima a céu aberto     A 1.067 (1.03-1.11) p=0.0003 | B 1.029 (0.99-1.07) p=0.1239
+  H2 Depósito irregular      A 1.135 (1.07-1.21) p=0.0001 | B 1.107 (1.03-1.19) p=0.0040
+  H3 Invasão                 A 1.012 (0.97-1.05) p=0.5479 | B 0.994 (0.96-1.03) p=0.7307
+  H4 Cesta desordem          A 1.024 (0.98-1.07) p=0.2736 | B 0.985 (0.96-1.01) p=0.2086
+  C  Trânsito (controle nega A 1.002 (0.96-1.04) p=0.9261 | B 0.992 (0.96-1.02) p=0.5755
+conf >= 0,7: fração média da rua com área = 19.0%, DP = 23.9 p.p.
+  H1 Queima a céu aberto     A 1.071 (1.02-1.12) p=0.0038 | B 1.047 (1.01-1.09) p=0.0180
+  H2 Depósito irregular      A 1.163 (1.10-1.23) p=0.0000 | B 1.150 (1.09-1.22) p=0.0000
+  H3 Invasão                 A 1.006 (0.95-1.06) p=0.8147 | B 0.994 (0.94-1.05) p=0.8218
+  H4 Cesta desordem          A 1.017 (0.97-1.07) p=0.5243 | B 0.980 (0.95-1.01) p=0.1899
+  C  Trânsito (controle nega A 0.992 (0.95-1.04) p=0.7543 | B 0.988 (0.95-1.03) p=0.5562
+-> D:/CityVision/TCC-data/resultado_r3_confianca.csv
+
+===== teste 42: sem_onibus =====
+  H1 Queima a céu aberto     com ônibus A 1.094 (1.06-1.13) p=0.0000 | B 1.067 (1.03-1.11) p=0.0011
+  H1 Queima a céu aberto     sem ônibus A 1.096 (1.06-1.13) p=0.0000 | B 1.066 (1.02-1.11) p=0.0015
+  H2 Depósito irregular      com ônibus A 1.150 (1.08-1.23) p=0.0000 | B 1.115 (1.03-1.21) p=0.0068
+  H2 Depósito irregular      sem ônibus A 1.147 (1.07-1.22) p=0.0000 | B 1.117 (1.03-1.21) p=0.0049
+  H3 Invasão                 com ônibus A 1.031 (0.99-1.07) p=0.1114 | B 0.995 (0.96-1.03) p=0.8096
+  H3 Invasão                 sem ônibus A 1.034 (1.00-1.07) p=0.0734 | B 1.001 (0.96-1.04) p=0.9461
+  H4 Cesta desordem          com ônibus A 1.026 (0.99-1.06) p=0.1576 | B 0.983 (0.96-1.01) p=0.1390
+  H4 Cesta desordem          sem ônibus A 1.030 (0.99-1.07) p=0.1361 | B 0.984 (0.96-1.01) p=0.1628
+  C  Trânsito (controle nega com ônibus A 1.006 (0.97-1.04) p=0.7514 | B 0.996 (0.97-1.02) p=0.7460
+  C  Trânsito (controle nega sem ônibus A 1.009 (0.97-1.05) p=0.6325 | B 0.992 (0.97-1.02) p=0.5149
+  Roubo                      com ônibus A 1.106 (1.05-1.16) p=0.0001 | B 1.109 (1.03-1.19) p=0.0038
+  Roubo                      sem ônibus A 1.106 (1.05-1.17) p=0.0002 | B 1.114 (1.04-1.19) p=0.0021
+  Veículo                    com ônibus A 1.114 (1.07-1.16) p=0.0000 | B 1.095 (1.06-1.14) p=0.0000
+  Veículo                    sem ônibus A 1.114 (1.07-1.16) p=0.0000 | B 1.094 (1.05-1.13) p=0.0000
+  Substância ilícita         com ônibus A 1.122 (1.05-1.20) p=0.0006 | B 1.066 (1.01-1.13) p=0.0247
+  Substância ilícita         sem ônibus A 1.128 (1.05-1.21) p=0.0008 | B 1.070 (1.01-1.13) p=0.0122
+  Furto                      com ônibus A 1.064 (1.02-1.11) p=0.0037 | B 1.013 (0.99-1.04) p=0.3068
+  Furto                      sem ônibus A 1.066 (1.02-1.11) p=0.0015 | B 1.013 (0.99-1.04) p=0.3375
+-> D:/CityVision/TCC-data/resultado_r3_sem_onibus.csv
+
+real	0m40.146s
+user	0m38.518s
+sys	0m1.058s

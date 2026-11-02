@@ -1,0 +1,7 @@
+$ python Modelo/scripts/contar_objetos_por_patch.py
+48286 detecções no CSV, 48286 com confiança >= 0.25
+45523 patches; detecções sem patch correspondente: 0
+  ponto_onibus         3811 detecções em   3317 patches (7.3%)
+  faixa_pedestre       6817 detecções em   3804 patches (8.4%)
+  area_NaoEdificada   37658 detecções em  24879 patches (54.7%)
+-> D:/CityVision/TCC-data/patches512_rua_objetos.csv

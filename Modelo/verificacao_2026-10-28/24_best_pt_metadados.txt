@@ -1,0 +1,13 @@
+$ python Modelo/scripts/ler_best_pt.py
+Creating new Ultralytics Settings v0.0.8 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/tmp/Ultralytics/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.
+Ultralytics usado no treino: 8.4.163   data: 2026-10-06T22:34:06.679398-03:00
+  metrics/precision(B)     0.78885
+  metrics/recall(B)        0.69046
+  metrics/mAP50(B)         0.73490
+  metrics/mAP50-95(B)      0.48291
+  fitness                  0.48291
+época do results.csv com essas métricas: [83]
+época de maior mAP50-95 (= fitness): 83
+época de maior mAP50: 82  (mAP50 0.73568, P 0.77490, R 0.72642) — NÃO é o best.pt

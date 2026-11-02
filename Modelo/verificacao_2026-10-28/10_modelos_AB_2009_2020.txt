@@ -1,0 +1,24 @@
+$ python Modelo/scripts/modelo_hipoteses_ruas.py --anos 2009 2020
+5712 ruas (rua, bairro), 64 bairros; critério p < 0.0125
+
+=== H1 Queima a céu aberto ===  2235 ocorrências, 1150 ruas com >=1, 5693 ruas em 61 bairros
+  A volume       área:  1.09 (1.06-1.13)  p=0.0000  +9% por +10 p.p. (apoia)
+  B composição   área:  1.07 (1.03-1.11)  p=0.0011  +7% por +10 p.p. (apoia)
+
+=== H2 Depósito irregular ===  294 ocorrências, 199 ruas com >=1, 4926 ruas em 41 bairros
+  A volume       área:  1.15 (1.08-1.23)  p=0.0000  +15% por +10 p.p. (apoia)
+  B composição   área:  1.12 (1.03-1.21)  p=0.0068  +12% por +10 p.p. (apoia)
+
+=== H3 Invasão ===  8584 ocorrências, 1195 ruas com >=1, 5675 ruas em 62 bairros
+  A volume       área:  1.03 (0.99-1.07)  p=0.1114  sem evidência
+  B composição   área:  1.00 (0.96-1.03)  p=0.8096  sem evidência
+
+=== H4 Cesta desordem ===  62759 ocorrências, 3678 ruas com >=1, 5712 ruas em 64 bairros
+  A volume       área:  1.03 (0.99-1.06)  p=0.1576  sem evidência
+  B composição   área:  0.98 (0.96-1.01)  p=0.1390  sem evidência
+
+=== C  Trânsito (controle negativo) ===  11982 ocorrências, 2077 ruas com >=1, 5712 ruas em 64 bairros
+  A volume       área:  1.01 (0.97-1.04)  p=0.7514  sem evidência
+  B composição   área:  1.00 (0.97-1.02)  p=0.7460  sem evidência
+
+-> D:/CityVision/TCC-data/resultado_hipoteses_2009_2020.csv

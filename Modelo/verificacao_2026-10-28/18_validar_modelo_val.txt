@@ -1,0 +1,24 @@
+$ python Modelo/scripts/validar_modelo.py --split val --device cpu
+WARNING ⚠️ user config directory '/tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/yolo_cfg/Ultralytics' is not writable, using '/tmp/Ultralytics'. Set YOLO_CONFIG_DIR to override.
+Creating new Ultralytics Settings v0.0.8 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/tmp/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.
+Ultralytics 8.4.150 🚀 Python-3.12.3 torch-2.15.0+cu132 CPU (Intel Xeon Processor @ 2.10GHz)
+YOLO26x-obb summary (fused): 197 layers, 57,545,592 parameters, 0 gradients, 202.2 GFLOPs
+Downloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 4% ╸─────────── 1000.2KB/22.2MB 9.5MB/s 0.1s<2.2sDownloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 13% ━╸────────── 3.0/22.2MB 18.6MB/s 0.2s<1.0sDownloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 20% ━━────────── 4.5/22.2MB 13.9MB/s 0.3s<1.3sDownloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 31% ━━━╸──────── 7.0/22.2MB 25.2MB/s 0.4s<0.6sDownloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 43% ━━━━━─────── 9.6/22.2MB 24.8MB/s 0.5s<0.5sDownloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 56% ━━━━━━╸───── 12.6/22.2MB 26.0MB/s 0.6s<0.4sDownloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 70% ━━━━━━━━──── 15.7/22.2MB 26.5MB/s 0.8s<0.2sDownloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 81% ━━━━━━━━━╸── 18.2/22.2MB 24.4MB/s 0.9s<0.2sDownloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 95% ━━━━━━━━━━━─ 21.2/22.2MB 27.6MB/s 1.0s<0.0sDownloading https://ultralytics.com/assets/Arial.Unicode.ttf to '/tmp/Ultralytics/Arial.Unicode.ttf': 100% ━━━━━━━━━━━━ 22.2MB 22.4MB/s 1.0s
+val: Fast image access ✅ (ping: 0.0±0.0 ms, read: 1218.6±833.5 MB/s, size: 65.8 KB)
+val: New cache created: /tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/work/D:/CityVision/Modelo/dataset/labels/val.cache
+                   all         76        153      0.787       0.69      0.735      0.484
+Speed: 5.7ms preprocess, 4916.6ms inference, 0.0ms loss, 2.3ms postprocess per image
+Results saved to /tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/work/D:/CityVision/Modelo/runs/val_val
+
+best.pt em val: 3 classes avaliadas
+classe                    P      R   mAP50  mAP50-95
+todas                 0.787  0.690   0.735     0.484
+area_NãoEdificada     0.611  0.612   0.666     0.310
+ponto_onibus          0.843  0.578   0.657     0.465
+faixa_pedestre        0.907  0.881   0.883     0.676
+
+real	6m31.492s
+user	5m45.769s
+sys	0m34.419s
