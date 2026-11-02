@@ -56,26 +56,26 @@ SIGESGUARDA = DADOS / "Sigesguarda" / "2024-04-01_sigesguarda_-_Base_de_Dados.cs
 SAIDA = DADOS / "ruas_caracteristicas_ocorrencias{}.csv"
 SAIDA_SEM = DADOS / "ocorrencias_sem_casamento{}.csv"
 
-# padrão: mesmo ano das ortofotos (decisão de 2026-10-15); --anos amplia o período
-# (2026-10-17: base completa 2009-2022, assumindo que a rua muda pouco no tempo)
+# padrão: mesmo ano das ortofotos; --anos amplia o período, assumindo que a rua
+# muda pouco no tempo
 ANO_INI, ANO_FIM = 2019, 2019
 CLASSES = ["ponto_onibus", "faixa_pedestre", "area_NaoEdificada"]
 # área não edificada também como presença (patches com >=1), não só contagem: uma área
-# grande costuma sair em várias caixas no mesmo patch (decisão de 2026-10-18)
+# grande costuma sair em várias caixas no mesmo patch
 BINARIAS = ["area_NaoEdificada"]
 COLS_BIN = [c + "_bin" for c in BINARIAS]
 # cortes de confiança extras (o principal, 0,25, é o de patches512_rua_objetos.csv)
 CORTES = {"_c050": 0.5, "_c070": 0.7}
 COLS_CORTE = [c + s for s in CORTES for c in CLASSES + COLS_BIN]
-# 5ª rodada (2026-10-19): tipo do patch por ônibus × área (conf 0,25); nenhum = n_patches - soma
+# 5ª rodada: tipo do patch por ônibus × área (conf 0,25); nenhum = n_patches - soma
 COLS_TIPO = ["patch_so_area", "patch_so_onibus", "patch_onibus_e_area"]
 MIN_NATUREZA = 100  # 4ª rodada: toda natureza com >= 100 registros no período vira coluna
-# naturezas que entram no modelo (decisão de 2026-10-15); as demais não vão para a tabela
+# naturezas que entram no modelo; as demais não vão para a tabela
 NATUREZAS = ["Dano", "Invasão", "Roubo", "Furto", "Trânsito", "Substância Ilícita",
              "Perturbação do sossego", "Queima a céu aberto", "Veículo",
-             # 2026-10-18: para H2 e a cesta de desordem (hipoteses-ocorrencias-ruas.md)
+             # para H2 e a cesta de desordem
              "Depósito irregular", "Crime ambiental"]
-# 2026-10-18, controles da 2ª rodada (hipoteses-ocorrencias-ruas.md):
+# controles dos modelos:
 #   oc_total       todas as naturezas casadas na rua (base do modelo de composição)
 #   comprimento_m  metros de eixo da rua cujo ponto médio cai num patch com ortofoto
 #   hierarquia     hierarquia viária (1 via grande ... 4 local) de maior comprimento coberto

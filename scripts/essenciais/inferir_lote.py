@@ -27,8 +27,7 @@ from pathlib import Path
 from ultralytics import YOLO
 
 RAIZ = Path(__file__).resolve().parents[2] / "Modelo"  # D:\CityVision\Modelo
-# 2026-10-12: aponta para o v4 XL (yolo26x-obb, 348 imgs dedup, mAP50 0,735).
-# Antes: runs/yolo26_obb_baldio_onibus_faixa (v1 nano, 150 imgs).
+# v4 XL (yolo26x-obb, 348 imagens, mAP50 0,735).
 RUN = RAIZ / "runs" / "yolo26x_obb_v4_xl"
 PT = RUN / "weights" / "best.pt"
 PASTA_PADRAO = Path("D:/CityVision/TCC-data/Patches512")

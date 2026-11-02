@@ -31,7 +31,7 @@ LOTE_FILTRADO = LOTE.with_name("deteccoes_lote_filtrado.csv")
 CLASSES = ["area_NaoEdificada", "ponto_onibus", "faixa_pedestre"]  # id 0, 1, 2
 PATCH_PX = 512
 
-# (lado menor mínimo, lado maior mínimo) em px — mínimos do treino, 2026-10-18
+# (lado menor mínimo, lado maior mínimo) em px — mínimos do treino
 MINIMO = {
     "area_NaoEdificada": (21.2, 25.6),
     "ponto_onibus": (6.5, 15.0),

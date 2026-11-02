@@ -58,11 +58,9 @@ CAMPOS_QUADRA = [
     "gtm_indfiscais",         # indicacoes fiscais contidas
 ]
 
-# Lote Cadastral (poligono): usado na regra geometrica de baldio (Estagio
-# 5, item 1/4 do CLAUDE.md). gtm_desc_natureza = "Territorial" (tributado so
-# pelo terreno, sem predio declarado) vs "Predial" e o pseudo-rotulo fiscal
-# de baldio/subutilizado que o CLAUDE.md previa so conseguir via LAI -
-# achado em 2026-09-13: ja vem aberto nesta camada, sem precisar pedir nada.
+# Lote Cadastral (poligono). gtm_desc_natureza = "Territorial" (tributado so
+# pelo terreno, sem predio declarado) vs "Predial". Esta camada nao entra na
+# analise final.
 CAMPOS_LOTE = [
     "gtm_cod_lote",            # codigo do lote (chave)
     "gtm_cod_quadra",          # quadra fiscal (liga com CAMPOS_QUADRA)

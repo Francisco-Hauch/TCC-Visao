@@ -31,8 +31,7 @@ from pathlib import Path
 from ultralytics import YOLO
 
 RAIZ = Path(__file__).resolve().parents[2] / "Modelo"
-# 2026-10-13: aponta para o v4 XL. revisao_200 (2026-10-04) foi feita com o v1
-# nano (runs/yolo26_obb_baldio_onibus_faixa, hoje fora do repositório).
+# v4 XL
 RUN = RAIZ / "runs" / "yolo26x_obb_v4_xl"
 PT = RUN / "weights" / "best.pt"
 DETECCOES_CSV = RUN / "deteccoes_lote.csv"
