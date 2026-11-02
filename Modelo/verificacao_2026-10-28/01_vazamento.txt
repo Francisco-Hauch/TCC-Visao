@@ -1,0 +1,27 @@
+$ python Modelo/scripts/checar_vazamento.py --csv vazamento_val_vizinhanca.csv
+dataset: /tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/work/D:/CityVision/Modelo/dataset
+train: 272 imagens, 523 caixas, 0 sem .txt
+val:   76 imagens, 153 caixas, 0 sem .txt
+nomes fora do padrão <regional>_<x>_<y>: 0 []
+tamanhos de imagem: [(512, 512)]
+
+=== testes de vazamento ===
+1 mesmo patch (x,y)                    train×val:   0  dentro do mesmo conjunto:   0  [OK]
+2 arquivo idêntico (MD5 bytes)         train×val:   0  dentro do mesmo conjunto:   0  [OK]
+3 pixels idênticos (MD5 pixels)        train×val:   0  dentro do mesmo conjunto:   0  [OK]
+4 rótulo idêntico (.txt não vazio)     train×val:   0  dentro do mesmo conjunto:   0  [OK]
+5 quase-duplicata (pHash ≤ 4/64)       train×val:   0  dentro do mesmo conjunto:   0  [OK]
+   distância pHash val→train mais próxima: mín 16, p5 18, mediana 20, máx 22 (de 64)
+   5 pares mais parecidos: boqueirao_190433_300639~portao_190376_300492 (d=16), _sem_regional_190267_300606~cic_190290_300534 (d=18), bairro_novo_190391_300627~pinheirinho_190351_300582 (d=18), bairro_novo_190403_300640~pinheirinho_190360_300566 (d=18), boqueirao_190449_300571~boqueirao_190422_300627 (d=18)
+
+=== 6 vizinhança espacial val → train (informativo, não é vazamento) ===
+   val com train mais próximo a mesmo tile (0): 0
+   val com train mais próximo a encostado (1 tile, divide borda/canto): 2
+   val com train mais próximo a a 2 tiles (~138 m): 3
+   val com train mais próximo a ≥3 tiles (≥~200 m): 71
+   distância (tiles): mediana 6, mín 1, máx 19
+      encostado: val/cajuru_190434_300530  ~  train/cajuru_190435_300531
+      encostado: val/santa_felicidade_190341_300417  ~  train/santa_felicidade_190341_300416
+
+-> /tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/saidas/vazamento_val_vizinhanca.csv
+RESULTADO: SEM VAZAMENTO (testes 1-5)

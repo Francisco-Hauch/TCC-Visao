@@ -1,0 +1,12 @@
+$ python Modelo/scripts/conferir_dataset_patches.py --split val
+val: 76 imagens; patch ausente em Patches512: 0 []
+  bytes idênticos: 43   pixels idênticos: 76
+  diferença média absoluta por pixel (0-255): mediana 0.00, máx 0.00
+    tatuquara_190352_300659: 0.00
+    tatuquara_190319_300672: 0.00
+    santa_felicidade_190356_300422: 0.00
+    santa_felicidade_190341_300417: 0.00
+    santa_felicidade_190334_300447: 0.00
+    santa_felicidade_190326_300462: 0.00
+    santa_felicidade_190302_300415: 0.00
+    santa_felicidade_190290_300439: 0.00

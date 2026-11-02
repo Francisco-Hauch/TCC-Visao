@@ -1,0 +1,13 @@
+$ python Modelo/scripts/filtro_tamanho.py --lote
+mínimos fixos no filtro (lado menor x lado maior, px):
+  area_NaoEdificada   21.2 x  25.6
+  ponto_onibus         6.5 x  15.0
+  faixa_pedestre       5.0 x  18.6
+mínimos medidos agora no dataset:
+  area_NaoEdificada   21.2 x  25.7
+  ponto_onibus         6.5 x  15.1
+  faixa_pedestre       5.1 x  18.7
+  area_NaoEdificada     18 de  37676 removidas (0.05%)
+  ponto_onibus          33 de   3844 removidas (0.86%)
+  faixa_pedestre         8 de   6825 removidas (0.12%)
+-> /tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/work/D:/CityVision/Modelo/runs/yolo26x_obb_v4_xl/deteccoes_lote_filtrado.csv

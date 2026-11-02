@@ -1,0 +1,14 @@
+$ python Modelo/scripts/montar_tabela_ruas.py --anos 2009 2022
+características: 6589 pares (rua, bairro), 6055 ruas distintas; 1719 patches sem rua (fora), 0 rua-patch sem eixo
+comprimento coberto: 6504 pares com eixo dentro das ortofotos, 85 sem
+ocorrências 2009-2022: 429346
+  casou                        302293 (70.4%)
+  casou_divisa                  11367 (2.6%)
+  rua_vista_em_outro_bairro     22554 (5.3%)
+  rua_sem_ortofoto              61018 (14.2%)
+  nome_fora_do_cadastro         32114 (7.5%)
+tabela: 6589 pares (5686 com >=1 ocorrência das 83 naturezas, 903 com 0)
+-> D:/CityVision/TCC-data/ruas_caracteristicas_ocorrencias_2009_2022.csv
+-> D:/CityVision/TCC-data/ocorrencias_sem_casamento_2009_2022.csv
+
+mais frequentes sem casamento:

@@ -1,0 +1,141 @@
+$ python TCC/rotular_tiles.py --zoom 19 (uma vez por pasta de regional) -> concatenado
+--- log_tiles__sem_regional.txt
+      1615 tiles
+      72464 segmentos, 9440 logradouros distintos
+      20 tiles com rua por interseccao (tile = 69.0 m)
+OK: 1615 tiles rotulados em 0.9s
+    por interseccao:     20 (1.2%)
+    por proximidade:     14 (0.9%)
+    sem rua:           1581 (97.9%)
+    -> tiles__sem_regional.csv
+--- log_tiles_bairro_novo.txt
+      2385 tiles
+      72464 segmentos, 9440 logradouros distintos
+      1885 tiles com rua por interseccao (tile = 69.0 m)
+OK: 2385 tiles rotulados em 1.0s
+    por interseccao:   1885 (79.0%)
+    por proximidade:    136 (5.7%)
+    sem rua:            364 (15.3%)
+    -> tiles_bairro_novo.csv
+--- log_tiles_boa_vista.txt
+      6693 tiles
+      72464 segmentos, 9440 logradouros distintos
+      4710 tiles com rua por interseccao (tile = 69.1 m)
+OK: 6693 tiles rotulados em 2.0s
+    por interseccao:   4710 (70.4%)
+    por proximidade:    576 (8.6%)
+    sem rua:           1407 (21.0%)
+    -> tiles_boa_vista.csv
+--- log_tiles_boqueirao.txt
+      5081 tiles
+      72464 segmentos, 9440 logradouros distintos
+      4098 tiles com rua por interseccao (tile = 69.0 m)
+OK: 5081 tiles rotulados em 1.0s
+    por interseccao:   4098 (80.7%)
+    por proximidade:    461 (9.1%)
+    sem rua:            522 (10.3%)
+    -> tiles_boqueirao.csv
+--- log_tiles_cajuru.txt
+      5163 tiles
+      72464 segmentos, 9440 logradouros distintos
+      4398 tiles com rua por interseccao (tile = 69.0 m)
+OK: 5163 tiles rotulados em 0.9s
+    por interseccao:   4398 (85.2%)
+    por proximidade:    311 (6.0%)
+    sem rua:            454 (8.8%)
+    -> tiles_cajuru.csv
+--- log_tiles_cic.txt
+      6831 tiles
+      72464 segmentos, 9440 logradouros distintos
+      3708 tiles com rua por interseccao (tile = 69.0 m)
+OK: 6831 tiles rotulados em 1.3s
+    por interseccao:   3708 (54.3%)
+    por proximidade:    582 (8.5%)
+    sem rua:           2541 (37.2%)
+    -> tiles_cic.csv
+--- log_tiles_matriz.txt
+      5219 tiles
+      72464 segmentos, 9440 logradouros distintos
+      4237 tiles com rua por interseccao (tile = 69.0 m)
+OK: 5219 tiles rotulados em 1.0s
+    por interseccao:   4237 (81.2%)
+    por proximidade:    531 (10.2%)
+    sem rua:            451 (8.6%)
+    -> tiles_matriz.csv
+--- log_tiles_pinheirinho.txt
+      4341 tiles
+      72464 segmentos, 9440 logradouros distintos
+      3357 tiles com rua por interseccao (tile = 69.0 m)
+OK: 4341 tiles rotulados em 0.9s
+    por interseccao:   3357 (77.3%)
+    por proximidade:    380 (8.8%)
+    sem rua:            604 (13.9%)
+    -> tiles_pinheirinho.csv
+--- log_tiles_portao.txt
+      2683 tiles
+      72464 segmentos, 9440 logradouros distintos
+      2195 tiles com rua por interseccao (tile = 69.0 m)
+OK: 2683 tiles rotulados em 0.9s
+    por interseccao:   2195 (81.8%)
+    por proximidade:    250 (9.3%)
+    sem rua:            238 (8.9%)
+    -> tiles_portao.csv
+--- log_tiles_santa_felicidade.txt
+      4750 tiles
+      72464 segmentos, 9440 logradouros distintos
+      2713 tiles com rua por interseccao (tile = 69.0 m)
+OK: 4750 tiles rotulados em 1.1s
+    por interseccao:   2713 (57.1%)
+    por proximidade:    640 (13.5%)
+    sem rua:           1397 (29.4%)
+    -> tiles_santa_felicidade.csv
+--- log_tiles_tatuquara.txt
+      762 tiles
+      72464 segmentos, 9440 logradouros distintos
+      357 tiles com rua por interseccao (tile = 69.0 m)
+OK: 762 tiles rotulados em 0.7s
+    por interseccao:    357 (46.9%)
+    por proximidade:     68 (8.9%)
+    sem rua:            337 (44.2%)
+    -> tiles_tatuquara.csv
+
+$ python TCC/rotular_quadras.py --zoom 19
+[1/5] carregando eixos...
+      72464 segmentos
+[2/5] carregando quadras cadastrais...
+      17123 quadras
+[3/5] lendo rotulos do estagio 2b...
+      45523 tiles
+[4/5] localizando tiles nas quadras e achando confrontantes...
+[5/5] escrevendo...
+OK: 45523 tiles em 19.8s
+    dentro de quadra cadastral: 34169 (75.1%)
+    sem_rua antes:              9896 (21.7%)
+    recuperados pela quadra:    8177
+    ainda sem endereco:         1719 (3.8%)
+    -> patches512_rotulos_quadra.csv
+
+=== comparação com o patches512_rotulos_quadra.csv original ===
+linhas 45523 45523 | colunas iguais: True
+mesmo conjunto de patches (x,y): True
+  z                    células diferentes: 0
+  lat_centro           células diferentes: 0
+  lon_centro           células diferentes: 0
+  rua_principal        células diferentes: 0
+  rua_abrev            células diferentes: 0
+  cobertura_m          células diferentes: 0
+  n_ruas               células diferentes: 0
+  ruas                 células diferentes: 0
+  bairro               células diferentes: 0
+  regional             células diferentes: 0
+  cep                  células diferentes: 0
+  hierarquia_viaria    células diferentes: 0
+  origem               células diferentes: 0
+  regional_pasta       células diferentes: 0
+  quadra               células diferentes: 0
+  rua_quadra           células diferentes: 0
+  dist_rua_quadra_m    células diferentes: 0
+  n_ruas_quadra        células diferentes: 0
+  ruas_quadra          células diferentes: 0
+  endereco             células diferentes: 0
+  endereco_origem      células diferentes: 0

@@ -1,0 +1,10 @@
+[IDÊNTICO byte a byte] Modelo/runs/yolo26x_obb_v4_xl/deteccoes_lote_filtrado.csv
+[IDÊNTICO byte a byte] TCC-data/patches512_renda.csv
+[IDÊNTICO byte a byte] TCC-data/patches512_rua_objetos.csv
+[IDÊNTICO byte a byte] TCC-data/ruas_caracteristicas_ocorrencias_2009_2020.csv
+[IDÊNTICO byte a byte] TCC-data/ocorrencias_sem_casamento_2009_2020.csv
+[DIFERE nos bytes] TCC-data/ruas_caracteristicas_ocorrencias_2009_2022.csv: linhas 6589 vs 6589, colunas 104 vs 107
+   colunas só no original: []
+   colunas só no regerado: ['patch_so_area', 'patch_so_onibus', 'patch_onibus_e_area']
+   conteúdo igual (diferença só de formatação/bytes)
+[IDÊNTICO byte a byte] TCC-data/ocorrencias_sem_casamento_2009_2022.csv

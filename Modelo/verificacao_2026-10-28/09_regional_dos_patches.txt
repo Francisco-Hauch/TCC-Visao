@@ -1,0 +1,15 @@
+regional recalculada pelo centro do patch (regionais.geojson) x pasta em Patches512:
+calc              _sem_regional  bairro_novo  boa_vista  boqueirao  cajuru   cic  matriz  pinheirinho  portao  santa_felicidade  tatuquara
+regional_pasta                                                                                                                            
+_sem_regional              1615            0          0          0       0     0       0            0       0                 0          0
+bairro_novo                   0         2385          0          0       0     0       0            0       0                 0          0
+boa_vista                     0            0       6693          0       0     0       0            0       0                 0          0
+boqueirao                     0            0          0       5081       0     0       0            0       0                 0          0
+cajuru                        0            0          0          0    5163     0       0            0       0                 0          0
+cic                           0            0          0          0       0  6831       0            0       0                 0          0
+matriz                        0            0          0          0       0     0    5219            0       0                 0          0
+pinheirinho                   0            0          0          0       0     0       0         4341       0                 0          0
+portao                        0            0          0          0       0     0       0            0    2683                 0          0
+santa_felicidade              0            0          0          0       0     0       0            0       0              4750          0
+tatuquara                     0            0          0          0       0     0       0            0       0                 0        762
+patches com pasta = regional recalculada: 45523 de 45523

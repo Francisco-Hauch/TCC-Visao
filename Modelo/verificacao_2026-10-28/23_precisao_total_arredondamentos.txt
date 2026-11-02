@@ -1,0 +1,2 @@
+H2 modelo B 2009-2020: efeito 1.115025  p 0.006765
+Trânsito modelo B 2009-2022: efeito 0.971268  p 0.015460

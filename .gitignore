@@ -1,5 +1,7 @@
 # Dados pesados — ficam só nesta máquina (GitHub recusa arquivo > 100 MB)
-TCC-data/
+TCC-data/*
+# exceção: tabela final rua × características × Sigesguarda (uma por período)
+!TCC-data/ruas_caracteristicas_ocorrencias_*.csv
 
 # Pesos e saídas de treino — best.pt (126 MB) vai como anexo de Release
 *.pt
@@ -13,3 +15,23 @@ __pycache__/
 .claude/
 Thumbs.db
 desktop.ini
+
+# ambiente da análise estatística (statsmodels/pandas)
+.venv-analise/
+
+# Notas em Markdown ficam fora do repositório, exceto os README
+*.md
+*.MD
+!README*.md
+!README*.MD
+
+# Pastas que começam com ponto (.claude, .venv-analise, ...)
+.*/
+!.git/
+
+# Revisões e rótulos avulsos — o único dataset no repositório é Modelo/dataset/
+Modelo/revisao_*/
+rotulos_yolo.zip
+
+# Scripts abandonados ou superados — ficam só nesta máquina
+scripts/fora_da_analise/

@@ -1,0 +1,236 @@
+$ python Modelo/scripts/conferir_artigo.py
+
+=== Dataset ===
+  ok imagens rotuladas (total)                                  artigo:            348   saída:            348  OK
+  ok imagens de treino                                          artigo:            272   saída:            272  OK
+  ok imagens de validação                                       artigo:             76   saída:             76  OK
+
+=== Treino (results.csv) ===
+ >>> época do best.pt                                           artigo:             82   saída:             83  DIFERE
+ >>> mAP50 (val) na melhor época                                artigo:          0.736   saída:          0.735  DIFERE
+ >>> mAP50-95 (val) na melhor época                             artigo:          0.482   saída:          0.483  DIFERE  (não está no artigo; CLAUDE.md)
+ >>> precisão (val) na melhor época                             artigo:           0.78   saída:           0.79  DIFERE
+ >>> recall (val) na melhor época                               artigo:           0.73   saída:           0.69  DIFERE
+
+=== Treino (revalidação) ===
+  ?  mAP50 por classe                                           artigo: área 0.67 (menor)   saída:              —  NÃO VERIFICÁVEL  (ver saída 18 (validar_modelo.py): área 0.666, ônibus 0.657, faixa 0.883)
+
+=== Detector ===
+  ok patches (tiles 512) na cidade                              artigo:         45,523   saída:         45,523  OK
+  ok % de patches com área não edificada                        artigo:           54.7   saída:           54.7  OK
+ >>> regional com MENOR % de área (nome)                        artigo:         Matriz   saída:         Portao  DIFERE  (37.0%)
+  ok % de área na Matriz                                        artigo:             38   saída:             38  OK
+ >>> menor % entre regionais                                    artigo:             38   saída:             37  DIFERE
+  ok regional com MAIOR % (nome)                                artigo: Santa Felicidade   saída: Santa Felicidade  OK
+  ok maior % entre regionais                                    artigo:             81   saída:             81  OK
+
+=== Integração ===
+  ok segmentos de eixo de logradouro                            artigo:         42,236   saída:         42,236  OK
+
+=== Dados ===
+  ok registros 2009–2020 (sistema antigo)                       artigo:        323,007   saída:        323,007  OK
+  ok registros casados com rua coberta                          artigo:        234,600   saída:        234,600  OK
+  ok % casados                                                  artigo:             73   saída:             73  OK
+  ok % rua sem ortofoto                                         artigo:             14   saída:             14  OK
+  ok % nome fora do cadastro                                    artigo:            7.6   saída:            7.6  OK
+  ok % rua vista em outro bairro                                artigo:            5.8   saída:            5.8  OK
+  ok unidades (rua, bairro) modeladas                           artigo:          5,712   saída:          5,712  OK
+  ok bairros                                                    artigo:             64   saída:             64  OK
+  ok km de rua nas unidades                                     artigo:          2,600   saída:          2,600  OK  (artigo arredonda para centena)
+  ok ocorrências nas unidades modeladas                         artigo:        224,180   saída:        224,180  OK
+  ok ocorrências fora (ruas <3 tiles, sem renda/hierarquia)     artigo:         10,420   saída:         10,420  OK
+  ok % dos registros nos 5% de unidades com mais                artigo:             65   saída:             65  OK
+  ok % de unidades sem queima                                   artigo:             80   saída:             80  OK
+  ok registros de queima                                        artigo:          2,235   saída:          2,235  OK
+  ok % de unidades sem depósito irregular                       artigo:             97   saída:             97  OK
+  ok registros de depósito irregular                            artigo:            294   saída:            294  OK
+
+=== Tabela I ===
+  ok média anual todas 2009–2020                                artigo:         18,682   saída:         18,682  OK
+  ok média anual todas 2021–2022                                artigo:         38,109   saída:         38,109  OK
+  ok média anual trânsito 2009–2020                             artigo:            998   saída:            999  OK  (empate exato 998.5 (meio))
+  ok média anual trânsito 2021–2022                             artigo:          6,300   saída:          6,300  OK
+  ok média anual queima 2009–2020                               artigo:            186   saída:            186  OK
+  ok média anual queima 2021–2022                               artigo:            391   saída:            391  OK
+  ok média anual roubo 2009–2020                                artigo:          1,050   saída:          1,050  OK
+  ok média anual roubo 2021–2022                                artigo:            530   saída:            531  OK  (empate exato 530.5 (meio))
+  ok % trânsito 2009–2020                                       artigo:            5.3   saída:            5.3  OK
+  ok % trânsito 2021–2022                                       artigo:           16.5   saída:           16.5  OK
+
+=== Tabela II ===
+  ok CORONEL JOAO MARIA SOB: tiles                              artigo:             12   saída:             12  OK
+  ok CORONEL JOAO MARIA SOB: tiles com área                     artigo:             12   saída:             12  OK
+  ok CORONEL JOAO MARIA SOB: ônibus/faixas                      artigo:            0/0   saída:            0/0  OK
+  ok CORONEL JOAO MARIA SOB: renda média                        artigo:          6,327   saída:          6,327  OK
+  ok CORONEL JOAO MARIA SOB: ocorrências                        artigo:             28   saída:             28  OK
+  ok CORONEL JOAO MARIA SOB: queima                             artigo:              2   saída:              2  OK
+  ok CORONEL JOAO MARIA SOB: invasão                            artigo:              0   saída:              0  OK
+  ok BRASILIO PERY MOREIRA: tiles                               artigo:             11   saída:             11  OK
+  ok BRASILIO PERY MOREIRA: tiles com área                      artigo:              8   saída:              8  OK
+  ok BRASILIO PERY MOREIRA: ônibus/faixas                       artigo:            1/3   saída:            1/3  OK
+  ok BRASILIO PERY MOREIRA: renda média                         artigo:          3,868   saída:          3,868  OK
+  ok BRASILIO PERY MOREIRA: ocorrências                         artigo:             52   saída:             52  OK
+  ok BRASILIO PERY MOREIRA: queima                              artigo:              2   saída:              2  OK
+  ok BRASILIO PERY MOREIRA: invasão                             artigo:              8   saída:              8  OK
+  ok PASTEUR: tiles                                             artigo:              8   saída:              8  OK
+  ok PASTEUR: tiles com área                                    artigo:              0   saída:              0  OK
+  ok PASTEUR: ônibus/faixas                                     artigo:            0/3   saída:            0/3  OK
+  ok PASTEUR: renda média                                       artigo:         14,553   saída:         14,553  OK
+  ok PASTEUR: ocorrências                                       artigo:             12   saída:             12  OK
+  ok PASTEUR: queima                                            artigo:              0   saída:              0  OK
+  ok PASTEUR: invasão                                           artigo:              0   saída:              0  OK
+
+=== Figura 3 ===
+  ok ocorrências/km (2009–2020) grupo 0-20%                     artigo:             98   saída:             98  OK
+  ok ocorrências/km (2009–2020) grupo 20-40%                    artigo:            105   saída:            105  OK
+  ok ocorrências/km (2009–2020) grupo 40-60%                    artigo:             90   saída:             90  OK
+  ok ocorrências/km (2009–2020) grupo 60-80%                    artigo:             58   saída:             58  OK
+  ok ocorrências/km (2009–2020) grupo 80-100%                   artigo:             57   saída:             57  OK
+  ok % queima no grupo 0–20%                                    artigo:            0.7   saída:            0.7  OK
+  ok % queima no grupo 80–100%                                  artigo:            1.5   saída:            1.5  OK
+  ok % depósito no grupo 0–20%                                  artigo:           0.13   saída:           0.13  OK
+  ok % depósito no grupo 80–100%                                artigo:           0.25   saída:           0.25  OK
+
+=== Tabela VI ===
+  ok H1 modelo A efeito                                         artigo:           1.09   saída:           1.09  OK
+  ok H1 modelo A IC inf                                         artigo:           1.06   saída:           1.06  OK
+  ok H1 modelo A IC sup                                         artigo:           1.13   saída:           1.13  OK
+  ok H1 modelo B efeito                                         artigo:           1.07   saída:           1.07  OK
+  ok H1 modelo B IC inf                                         artigo:           1.03   saída:           1.03  OK
+  ok H1 modelo B IC sup                                         artigo:           1.11   saída:           1.11  OK
+  ok H2 modelo A efeito                                         artigo:           1.15   saída:           1.15  OK
+  ok H2 modelo A IC inf                                         artigo:           1.08   saída:           1.08  OK
+  ok H2 modelo A IC sup                                         artigo:           1.23   saída:           1.23  OK
+  ok H2 modelo B efeito                                         artigo:           1.12   saída:           1.12  OK
+  ok H2 modelo B IC inf                                         artigo:           1.03   saída:           1.03  OK
+  ok H2 modelo B IC sup                                         artigo:           1.21   saída:           1.21  OK
+  ok H3 modelo A efeito                                         artigo:           1.03   saída:           1.03  OK
+  ok H3 modelo A IC inf                                         artigo:           0.99   saída:           0.99  OK
+  ok H3 modelo A IC sup                                         artigo:           1.07   saída:           1.07  OK
+  ok H3 modelo B efeito                                         artigo:           1.00   saída:           1.00  OK
+  ok H3 modelo B IC inf                                         artigo:           0.96   saída:           0.96  OK
+  ok H3 modelo B IC sup                                         artigo:           1.03   saída:           1.03  OK
+  ok H4 modelo A efeito                                         artigo:           1.03   saída:           1.03  OK
+  ok H4 modelo A IC inf                                         artigo:           0.99   saída:           0.99  OK
+  ok H4 modelo A IC sup                                         artigo:           1.06   saída:           1.06  OK
+  ok H4 modelo B efeito                                         artigo:           0.98   saída:           0.98  OK
+  ok H4 modelo B IC inf                                         artigo:           0.96   saída:           0.96  OK
+  ok H4 modelo B IC sup                                         artigo:           1.01   saída:           1.01  OK
+  ok C modelo A efeito                                          artigo:           1.01   saída:           1.01  OK
+  ok C modelo A IC inf                                          artigo:           0.97   saída:           0.97  OK
+  ok C modelo A IC sup                                          artigo:           1.04   saída:           1.04  OK
+  ok C modelo B efeito                                          artigo:           1.00   saída:           1.00  OK
+  ok C modelo B IC inf                                          artigo:           0.97   saída:           0.97  OK
+  ok C modelo B IC sup                                          artigo:           1.02   saída:           1.02  OK
+  ok H1 p no modelo B                                           artigo:          0.001   saída:          0.001  OK
+  ok H2 p no modelo B                                           artigo:          0.007   saída:          0.007  OK
+
+=== Sensibilidade 2009–2022 ===
+  ok H1 modelo A                                                artigo:           1.11   saída:           1.11  OK
+  ok H1 modelo B                                                artigo:           1.09   saída:           1.09  OK
+  ok H2 modelo A                                                artigo:           1.17   saída:           1.17  OK
+  ok H2 modelo B                                                artigo:           1.14   saída:           1.14  OK
+  ok trânsito modelo B (efeito)                                 artigo:           0.97   saída:           0.97  OK  (artigo: 'leve efeito negativo')
+
+=== Tabela VII ===
+  ok H1 Moran: menor p                                          artigo:          0.086   saída:          0.086  OK
+  ok H2 Moran: menor p                                          artigo:           0.18   saída:           0.18  OK
+  ok H1 SLX efeito B                                            artigo:           1.06   saída:           1.06  OK
+  ok H1 SLX p B                                                 artigo:          0.023   saída:          0.023  OK
+  ok H2 SLX efeito B                                            artigo:           1.15   saída:           1.15  OK
+  ok H2 SLX p B                                                 artigo:          0.002   saída:          0.002  OK
+  ok H1 cluster efeito B                                        artigo:           1.07   saída:           1.07  OK
+  ok H1 cluster p B                                             artigo:          0.003   saída:          0.003  OK
+  ok H2 cluster efeito B                                        artigo:           1.12   saída:           1.12  OK
+  ok H2 cluster p B                                             artigo:          0.027   saída:          0.027  OK
+  ok H1 sem trânsito e perturbação (efeito)                     artigo:           1.06   saída:           1.06  OK
+  ok H1 sem trânsito e perturbação (p)                          artigo:          0.004   saída:          0.004  OK
+  ok H2 sem trânsito e perturbação (efeito)                     artigo:           1.11   saída:           1.11  OK
+  ok H2 sem trânsito e perturbação (p)                          artigo:          0.012   saída:          0.012  OK
+  ok H1 conf ≥0,5 efeito B                                      artigo:           1.03   saída:           1.03  OK
+  ok H1 conf ≥0,5 p B                                           artigo:           0.12   saída:           0.12  OK
+  ok H1 conf ≥0,7 efeito B                                      artigo:           1.05   saída:           1.05  OK
+  ok H1 conf ≥0,7 p B                                           artigo:           0.02   saída:           0.02  OK
+  ok H2 conf ≥0,5 efeito B                                      artigo:           1.11   saída:           1.11  OK
+  ok H2 conf ≥0,5 p B                                           artigo:          0.004   saída:          0.004  OK
+  ok H2 conf ≥0,7 efeito B                                      artigo:           1.15   saída:           1.15  OK
+  ok H2 conf ≥0,7 p B < 0.001                                   artigo:            sim   saída:            sim  OK
+
+=== Robustez (texto) ===
+  ok fração média de área por rua, conf ≥0,25 (%)               artigo:             44   saída:             44  OK
+ >>> fração média de área por rua, conf ≥0,5 (%)                artigo:             31   saída:             30  DIFERE
+  ok fração média de área por rua, conf ≥0,7 (%)                artigo:             19   saída:             19  OK
+  ok H1 efeito por DP, conf ≥0,25                               artigo:           1.21   saída:           1.21  OK
+  ok H1 efeito por DP, conf ≥0,5                                artigo:           1.08   saída:           1.08  OK
+  ok H1 efeito por DP, conf ≥0,7                                artigo:           1.12   saída:           1.12  OK
+  ok H2 efeito por DP, conf ≥0,25                               artigo:           1.38   saída:           1.38  OK
+  ok H2 efeito por DP, conf ≥0,5                                artigo:           1.33   saída:           1.33  OK
+  ok H2 efeito por DP, conf ≥0,7                                artigo:           1.40   saída:           1.40  OK
+
+=== Tabela VII ===
+  ok H1 permutação: nenhuma ≥ observado                         artigo:            sim   saída:            sim  OK  (p_perm = 0.0010 = 1/1001)
+  ok H2 permutação: nenhuma ≥ observado                         artigo:            sim   saída:            sim  OK  (p_perm = 0.0010 = 1/1001)
+  ok H1 deixa-um-bairro: menor efeito B                         artigo:           1.05   saída:           1.05  OK
+ >>> H1 deixa-um-bairro: maior efeito B                         artigo:           1.08   saída:           1.07  DIFERE
+  ok H2 deixa-um-bairro: menor efeito B                         artigo:           1.09   saída:           1.09  OK
+  ok H2 deixa-um-bairro: maior efeito B                         artigo:           1.14   saída:           1.14  OK
+  ok H2 deixa-um-bairro: maior p (bairro)                       artigo: CIDADE INDUSTRIAL DE CURITIBA   saída: CIDADE INDUSTRIAL DE CURITIBA  OK  (revisão do autor)
+  ok H2 deixa-um-bairro: maior p                                artigo:          0.031   saída:          0.031  OK  (revisão do autor)
+
+=== Tamanho do efeito ===
+  ok rua local típica (m)                                       artigo:            273   saída:            273  OK
+  ok H1 razão 80%/20%                                           artigo:            1.7   saída:            1.7  OK
+  ok H1 IC inf                                                  artigo:            1.4   saída:            1.4  OK
+  ok H1 IC sup                                                  artigo:            2.1   saída:            2.1  OK
+  ok H2 razão 80%/20%                                           artigo:            2.3   saída:            2.3  OK
+  ok H2 IC inf                                                  artigo:            1.5   saída:            1.5  OK
+  ok H2 IC sup                                                  artigo:            3.3   saída:            3.3  OK
+  ok queimas a mais por 100 ruas/ano                            artigo:              1   saída:              1  OK  (artigo: 'cerca de uma')
+  ok renda da rua local típica (R$)                             artigo:          3,990   saída:          3,990  OK
+
+=== Robustez (texto) ===
+  ok H1 modelo B sem controle de ônibus                         artigo:           1.07   saída:           1.07  OK
+  ok H2 modelo B sem controle de ônibus                         artigo:           1.12   saída:           1.12  OK
+
+=== Tabela VIII ===
+  ok naturezas testadas                                         artigo:             64   saída:             64  OK
+  ok G1 n                                                       artigo:              7   saída:              7  OK
+  ok G1 positivos                                               artigo:              4   saída:              4  OK
+  ok G1 negativos                                               artigo:              0   saída:              0  OK
+  ok G1 nulos                                                   artigo:              3   saída:              3  OK
+  ok G2 n                                                       artigo:              5   saída:              5  OK
+  ok G2 positivos                                               artigo:              1   saída:              1  OK
+  ok G2 negativos                                               artigo:              2   saída:              2  OK
+  ok G2 nulos                                                   artigo:              2   saída:              2  OK
+  ok G3 n                                                       artigo:             16   saída:             16  OK
+  ok G3 positivos                                               artigo:              5   saída:              5  OK
+  ok G3 negativos                                               artigo:              1   saída:              1  OK
+  ok G3 nulos                                                   artigo:             10   saída:             10  OK
+  ok G4 n                                                       artigo:             12   saída:             12  OK
+  ok G4 positivos                                               artigo:              0   saída:              0  OK
+  ok G4 negativos                                               artigo:              1   saída:              1  OK
+  ok G4 nulos                                                   artigo:             11   saída:             11  OK
+  ok G5 n                                                       artigo:             24   saída:             24  OK
+  ok G5 positivos                                               artigo:              1   saída:              1  OK
+  ok G5 negativos                                               artigo:              3   saída:              3  OK
+  ok G5 nulos                                                   artigo:             20   saída:             20  OK
+
+=== Exploratório (texto) ===
+  ok crime_ambiental efeito B                                   artigo:           1.16   saída:           1.16  OK
+  ok corte_irregular_arvore efeito B                            artigo:           1.14   saída:           1.14  OK
+  ok deposito_irregular efeito B                                artigo:           1.12   saída:           1.12  OK
+  ok queima_a_ceu_aberto efeito B                               artigo:           1.07   saída:           1.07  OK
+  ok roubo: interação ônibus×área (modelo A)                    artigo:           1.01   saída:           1.01  OK
+  ok roubo: p da interação (modelo A)                           artigo:           0.95   saída:           0.95  OK
+  ok trânsito: interação (modelo A)                             artigo:           1.17   saída:           1.17  OK  (revisão do autor)
+  ok trânsito: p da interação (modelo A)                        artigo:           0.04   saída:           0.04  OK  (revisão do autor)
+
+=== Não verificáveis nesta rodada ===
+  ?  tiles z20 baixados                                         artigo:        180,319   saída:              —  NÃO VERIFICÁVEL  (exige a árvore Ortofotos2019 (180 mil arquivos))
+  ?  quadrantes vazios                                          artigo: 1,773 / 182,092   saída:              —  NÃO VERIFICÁVEL  (idem; 45.523×4 = 182.092 confere com o nº de patches)
+  ?  tamanho do download                                        artigo:         2.4 GB   saída:              —  NÃO VERIFICÁVEL  (idem)
+  ?  conexões paralelas                                         artigo:  16 (autor: 8)   saída:              —  NÃO VERIFICÁVEL  (sem log do download; scripts têm padrão 16, README diz 8)
+  ?  mAP50 do v1 nano                                           artigo:          0.718   saída:              —  NÃO VERIFICÁVEL  (pesos/run do v1 não estão na pasta (só o README))
+
+TOTAL: 194 itens — OK 179, DIFERE 9, não verificável 6
+-> /tmp/claude-0/-home-claude/04d4edfe-ff53-561f-9773-eaa9ad82a771/scratchpad/saidas/conferencia_artigo.csv

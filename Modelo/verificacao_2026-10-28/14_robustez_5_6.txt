@@ -1,0 +1,39 @@
+$ python Modelo/scripts/robustez_r3.py --teste 5 6
+
+===== teste 5: teste_fragilidade =====
+  H2 Depósito irregula permutação 200/1000 (18s)
+  H2 Depósito irregula permutação 400/1000 (36s)
+  H2 Depósito irregula permutação 600/1000 (54s)
+  H2 Depósito irregula permutação 800/1000 (73s)
+  H2 Depósito irregula permutação 1000/1000 (91s)
+  H2 Depósito irregular: observado 1.115, nulo 95% 0.930-1.068, p_perm=0.0010
+  H2 Depósito irregular deixa-um-bairro-de-fora (41): B de 1.086 a 1.136; p máx 0.0310 (sem CIDADE INDUSTRIAL DE CURITIBA)
+  H1 Queima a céu aber permutação 200/1000 (26s)
+  H1 Queima a céu aber permutação 400/1000 (52s)
+  H1 Queima a céu aber permutação 600/1000 (79s)
+  H1 Queima a céu aber permutação 800/1000 (105s)
+  H1 Queima a céu aber permutação 1000/1000 (132s)
+  H1 Queima a céu aberto: observado 1.067, nulo 95% 0.967-1.035, p_perm=0.0010
+  H1 Queima a céu aberto deixa-um-bairro-de-fora (61): B de 1.054 a 1.075; p máx 0.0055 (sem CIDADE INDUSTRIAL DE CURITIBA)
+-> D:/CityVision/TCC-data/resultado_r3_fragilidade_permutacao.csv
+-> D:/CityVision/TCC-data/resultado_r3_fragilidade_lobo.csv
+
+===== teste 6: teste_tamanho =====
+rua local típica: 273 m, renda 3990, ônibus 0.00 e faixa 0.00 por 10 patches
+  H1 Queima a céu aber bootstrap 100/500 (40s)
+  H1 Queima a céu aber bootstrap 200/500 (80s)
+  H1 Queima a céu aber bootstrap 300/500 (120s)
+  H1 Queima a céu aber bootstrap 400/500 (159s)
+  H1 Queima a céu aber bootstrap 500/500 (199s)
+  H1 Queima a céu aberto: 0.046 -> 0.079 por km/ano (x1.72); +0.9 por 100 ruas/ano (IC 0.5-1.4); boot ok 500
+  H2 Depósito irregula bootstrap 100/500 (641s)
+  H2 Depósito irregula bootstrap 200/500 (1333s)
+  H2 Depósito irregula bootstrap 300/500 (1940s)
+  H2 Depósito irregula bootstrap 400/500 (2439s)
+  H2 Depósito irregula bootstrap 500/500 (2970s)
+  H2 Depósito irregular: 0.004 -> 0.010 por km/ano (x2.31); +0.2 por 100 ruas/ano (IC 0.1-0.3); boot ok 500
+-> D:/CityVision/TCC-data/resultado_r3_tamanho_efeito.csv
+
+real	57m32.386s
+user	56m12.573s
+sys	0m12.577s

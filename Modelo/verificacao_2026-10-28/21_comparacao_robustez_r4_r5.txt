@@ -1,0 +1,33 @@
+[DIFERE nos bytes] TCC-data/resultado_r3_moran.csv: linhas 20 vs 20, colunas 7 vs 7
+   conteúdo igual (diferença só de formatação/bytes)
+[DIFERE nos bytes] TCC-data/resultado_r3_moran_reestimado.csv: linhas 6 vs 6, colunas 13 vs 13
+   conteúdo igual (diferença só de formatação/bytes)
+[DIFERE nos bytes] TCC-data/resultado_r3_composicao.csv: linhas 24 vs 24, colunas 11 vs 11
+   conteúdo igual (diferença só de formatação/bytes)
+[DIFERE nos bytes] TCC-data/resultado_r3_confianca.csv: linhas 30 vs 30, colunas 11 vs 11
+   conteúdo igual (diferença só de formatação/bytes)
+[DIFERE nos bytes] TCC-data/resultado_r3_sem_onibus.csv: linhas 18 vs 18, colunas 10 vs 10
+   conteúdo igual (diferença só de formatação/bytes)
+[DIFERE nos bytes] TCC-data/resultado_r3_fragilidade_permutacao.csv: linhas 2 vs 2, colunas 9 vs 9
+   conteúdo igual (diferença só de formatação/bytes)
+[DIFERE nos bytes] TCC-data/resultado_r3_fragilidade_lobo.csv: linhas 102 vs 102, colunas 11 vs 11
+   conteúdo igual (diferença só de formatação/bytes)
+[DIFERE nos bytes] TCC-data/resultado_r3_tamanho_efeito.csv: linhas 2 vs 2, colunas 19 vs 19
+   conteúdo igual (diferença só de formatação/bytes)
+[DIFERE nos bytes] TCC-data/resultado_r4_todas_naturezas.csv: linhas 64 vs 64, colunas 19 vs 19
+   coluna A_efeito: 3 células diferentes; ex. linha 25: np.float64(1.0326) vs np.float64(nan)
+   coluna A_ic95_inf: 3 células diferentes; ex. linha 25: np.float64(0.9639) vs np.float64(nan)
+   coluna A_ic95_sup: 3 células diferentes; ex. linha 25: np.float64(1.1061) vs np.float64(nan)
+   coluna A_p: 3 células diferentes; ex. linha 25: np.float64(0.3609) vs np.float64(nan)
+[DIFERE nos bytes] TCC-data/resultado_r5_onibus_area.csv: linhas 16 vs 16, colunas 8 vs 8
+   conteúdo igual (diferença só de formatação/bytes)
+
+r4: naturezas em que o modelo A (volume) não convergiu nesta máquina:
+                     natureza_orig                        grupo_orig  n_ocorrencias_orig  A_efeito_orig  A_p_orig  B_efeito_orig  B_q_orig sinal_orig  A_efeito  B_efeito sinal
+25                    porte_ilegal        G3 crime e desordem de rua                 456         1.0326    0.3609         0.9957    0.9422       nulo       NaN    0.9957  nulo
+31                 desinteligencia         G4 interpessoal/doméstico                2180         1.0355    0.2046         1.0144    0.7035       nulo       NaN    1.0144  nulo
+43  uso_indevido_cartao_transporte  G5 operacional/controle negativo                 394            NaN       NaN         1.0389    0.7093       nulo       NaN    1.0389  nulo
+44                     desabamento  G5 operacional/controle negativo                 280            NaN       NaN         1.0283    0.6250       nulo       NaN    1.0283  nulo
+53                         alarmes  G5 operacional/controle negativo                6270            NaN       NaN         1.0010    0.9917       nulo       NaN    1.0010  nulo
+59                    manifestacao  G5 operacional/controle negativo                 275            NaN       NaN         0.9798    0.8311       nulo       NaN    0.9798  nulo
+colunas do modelo B e sinal idênticos nas 64: True

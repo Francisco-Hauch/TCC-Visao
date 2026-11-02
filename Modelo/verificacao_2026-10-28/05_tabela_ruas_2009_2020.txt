@@ -1,0 +1,34 @@
+$ python Modelo/scripts/montar_tabela_ruas.py --anos 2009 2020
+características: 6589 pares (rua, bairro), 6055 ruas distintas; 1719 patches sem rua (fora), 0 rua-patch sem eixo
+comprimento coberto: 6504 pares com eixo dentro das ortofotos, 85 sem
+ocorrências 2009-2020: 323007
+  casou                        225753 (69.9%)
+  casou_divisa                   8847 (2.7%)
+  rua_vista_em_outro_bairro     18594 (5.8%)
+  rua_sem_ortofoto              45140 (14.0%)
+  nome_fora_do_cadastro         24673 (7.6%)
+tabela: 6589 pares (5449 com >=1 ocorrência das 74 naturezas, 1140 com 0)
+-> D:/CityVision/TCC-data/ruas_caracteristicas_ocorrencias_2009_2020.csv
+-> D:/CityVision/TCC-data/ocorrencias_sem_casamento_2009_2020.csv
+
+mais frequentes sem casamento:
+    1926  SETE DE SETEMBRO / CENTRO  [rua_vista_em_outro_bairro]
+    1513  OSWALDO MACIEL / TABOAO  [rua_sem_ortofoto]
+    1413  CARLOS GOMES / CENTRO  [nome_fora_do_cadastro]
+    1310  EUFRÁSIO CORREIA / CENTRO  [nome_fora_do_cadastro]
+    1092  MATEUS LEME / SAO LOURENCO  [rua_vista_em_outro_bairro]
+    1035  ANITA GARIBALDI / BARREIRINHA  [rua_vista_em_outro_bairro]
+    1008  MARECHAL FLORIANO PEIXOTO / HAUER  [rua_vista_em_outro_bairro]
+     946  JOÃO CÂNDIDO / SAO FRANCISCO  [nome_fora_do_cadastro]
+     721  GARIBALDI / SAO FRANCISCO  [nome_fora_do_cadastro]
+     720  PREFEITO LOTHÁRIO MEISSNER / JARDIM BOTANICO  [rua_sem_ortofoto]
+     652  BR-277 - CURITIBA / PONTA GROSSA / SANTO INACIO  [nome_fora_do_cadastro]
+     633  PADRE ANCHIETA / CAMPINA DO SIQUEIRA  [rua_vista_em_outro_bairro]
+     610  PRESIDENTE AFFONSO CAMARGO / CAJURU  [rua_vista_em_outro_bairro]
+     601  ABILIO DE ABREU / GUABIROTUBA  [nome_fora_do_cadastro]
+     586  PRESIDENTE AFFONSO CAMARGO / CAPAO DA IMBUIA  [rua_vista_em_outro_bairro]
+     581  GENEROSO MARQUES / CENTRO  [nome_fora_do_cadastro]
+     560  DA ESPANHA / BIGORRILHO  [nome_fora_do_cadastro]
+     559  DEPUTADO HEITOR ALENCAR FURTADO / CAMPO COMPRIDO  [rua_sem_ortofoto]
+     466  PREF. MAURÍCIO FRUET / CAJURU  [rua_sem_ortofoto]
+     429  DEZENOVE DE DEZEMBRO / CENTRO  [nome_fora_do_cadastro]
